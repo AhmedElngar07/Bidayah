@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "388568276012",
-    "project_id": "bidayah-cc11a",
-    "storage_bucket": "bidayah-cc11a.firebasestorage.app"
+    "project_number": "515516136348",
+    "project_id": "bidayah-test",
+    "storage_bucket": "bidayah-test.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:388568276012:android:beb8ad70d6b1c6e460c589",
+        "mobilesdk_app_id": "1:515516136348:android:cf5578ff802f6e730da659",
         "android_client_info": {
           "package_name": "com.example.bidayah"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD591knbw5jTcfW12L_g3C_Z141K8ReL9c"
+          "current_key": "AIzaSyDhUHP6RW-OwG5lc5ahJo-XlYPUYOp15po"
         }
       ],
       "services": {

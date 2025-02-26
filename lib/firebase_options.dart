@@ -41,48 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBk4glb_NM804DbChntovkFjA2eVnmTj78',
-    appId: '1:388568276012:web:23e16114276e17e960c589',
-    messagingSenderId: '388568276012',
-    projectId: 'bidayah-cc11a',
-    authDomain: 'bidayah-cc11a.firebaseapp.com',
-    storageBucket: 'bidayah-cc11a.firebasestorage.app',
-    measurementId: 'G-GVJ7EE7C6D',
+    apiKey: 'AIzaSyDwygWvHAdvWlBM9li47AZn5N4ZcLei0bE',
+    appId: '1:515516136348:web:26a91235cdcfbc0b0da659',
+    messagingSenderId: '515516136348',
+    projectId: 'bidayah-test',
+    authDomain: 'bidayah-test.firebaseapp.com',
+    storageBucket: 'bidayah-test.firebasestorage.app',
+    measurementId: 'G-KVYTJR7TYQ',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD591knbw5jTcfW12L_g3C_Z141K8ReL9c',
-    appId: '1:388568276012:android:beb8ad70d6b1c6e460c589',
-    messagingSenderId: '388568276012',
-    projectId: 'bidayah-cc11a',
-    storageBucket: 'bidayah-cc11a.firebasestorage.app',
+    apiKey: 'AIzaSyDhUHP6RW-OwG5lc5ahJo-XlYPUYOp15po',
+    appId: '1:515516136348:android:cf5578ff802f6e730da659',
+    messagingSenderId: '515516136348',
+    projectId: 'bidayah-test',
+    storageBucket: 'bidayah-test.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAUU-WLwxuc918bFYtjrvYGuiftWp9KmI4',
-    appId: '1:388568276012:ios:5e47ae55c0c48a6460c589',
-    messagingSenderId: '388568276012',
-    projectId: 'bidayah-cc11a',
-    storageBucket: 'bidayah-cc11a.firebasestorage.app',
+    apiKey: 'AIzaSyA58abka7svvFbhhITOAAasEL7DIAh3JoM',
+    appId: '1:515516136348:ios:6b300d64fc03a3dc0da659',
+    messagingSenderId: '515516136348',
+    projectId: 'bidayah-test',
+    storageBucket: 'bidayah-test.firebasestorage.app',
     iosBundleId: 'com.example.bidayah',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAUU-WLwxuc918bFYtjrvYGuiftWp9KmI4',
-    appId: '1:388568276012:ios:5e47ae55c0c48a6460c589',
-    messagingSenderId: '388568276012',
-    projectId: 'bidayah-cc11a',
-    storageBucket: 'bidayah-cc11a.firebasestorage.app',
+    apiKey: 'AIzaSyA58abka7svvFbhhITOAAasEL7DIAh3JoM',
+    appId: '1:515516136348:ios:6b300d64fc03a3dc0da659',
+    messagingSenderId: '515516136348',
+    projectId: 'bidayah-test',
+    storageBucket: 'bidayah-test.firebasestorage.app',
     iosBundleId: 'com.example.bidayah',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBk4glb_NM804DbChntovkFjA2eVnmTj78',
-    appId: '1:388568276012:web:87bdaf6ebc05b6ac60c589',
-    messagingSenderId: '388568276012',
-    projectId: 'bidayah-cc11a',
-    authDomain: 'bidayah-cc11a.firebaseapp.com',
-    storageBucket: 'bidayah-cc11a.firebasestorage.app',
-    measurementId: 'G-MTL35J5V1Z',
+    apiKey: 'AIzaSyDwygWvHAdvWlBM9li47AZn5N4ZcLei0bE',
+    appId: '1:515516136348:web:9439605410fef2630da659',
+    messagingSenderId: '515516136348',
+    projectId: 'bidayah-test',
+    authDomain: 'bidayah-test.firebaseapp.com',
+    storageBucket: 'bidayah-test.firebasestorage.app',
+    measurementId: 'G-E3LZCPQ9B4',
   );
+
 }
