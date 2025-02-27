@@ -4,9 +4,21 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+//subabase imports
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Initialize Supabase
+  await Supabase.initialize(
+    url: 
+        'https://thtuxfwmyucmgvjknfho.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRodHV4ZndteXVjbWd2amtuZmhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2MDY5NjYsImV4cCI6MjA1NjE4Mjk2Nn0.VHaCQ-QSEgb1Alwr3prWMIh5GuCu5JA2ObPAd2ZEKxE',
+  );
+
   runApp(const MyApp());
 }
 
