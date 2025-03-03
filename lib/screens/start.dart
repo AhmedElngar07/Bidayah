@@ -9,14 +9,6 @@ class StartScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(
-          'Assess your skills',
-          style: TextStyle(
-            fontSize: MediaQuery.of(context).size.width > 600 ? 24.0 : 18.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.blue[700],
-          ),
-        ),
         centerTitle: false,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.blue[700]),
@@ -33,9 +25,6 @@ class StartScreen extends StatelessWidget {
           final maxHeight = constraints.maxHeight;
           
           // Calculate responsive sizes
-          final buttonWidth = maxWidth * 0.35;
-          final buttonHeight = maxHeight * 0.07;
-          final buttonFontSize = maxWidth * 0.045;
           final cloudTextSize = maxWidth > 600 ? 24.0 : 20.0;
           
           return Stack(
@@ -43,7 +32,7 @@ class StartScreen extends StatelessWidget {
             children: [
               // Background image
               Image.asset(
-                'assets/Image 2025.jpeg',
+                'assets/Image 2025.jpg',
                 fit: BoxFit.cover,
               ),
               
@@ -88,57 +77,35 @@ class StartScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              
-              // Get Started button - more to the right and bigger
-              Positioned(
-                bottom: maxHeight * 0.05,
-                right: maxWidth * 0.04, // Further right
-                child: SizedBox(
-                  width: buttonWidth,
-                  height: buttonHeight,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Placeholder(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[700],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(buttonHeight / 2),
-                      ),
-                      elevation: 4,
-                      padding: EdgeInsets.zero, // Remove default padding
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Get Started',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: buttonFontSize, // Larger font
-                          ),
-                        ),
-                        SizedBox(width: maxWidth * 0.02),
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                          size: buttonFontSize,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ],
           );
         },
       ),
+      // Custom floating action button instead of the Get Started button
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 16, right: 16),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Placeholder(),
+              ),
+            );
+          },
+          backgroundColor: const Color.fromARGB(255, 18, 101, 169),
+          mini: false,
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12), // Square corners with slight rounding
+          ),
+          child: const Icon(
+            Icons.arrow_forward,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
