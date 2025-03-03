@@ -1,20 +1,22 @@
 import 'package:bidayah/Widgets/BottomNavBar%20.dart';
+import 'package:bidayah/Widgets/Step_Progress.dart';
+import 'package:bidayah/Widgets/custom_home_appbar.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 2; 
-  
+class _HomePageState extends State<HomePage> {
+  int _currentIndex = 2;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Background image
+          // Background
           Container(
             width: double.infinity,
             height: double.infinity,
@@ -25,76 +27,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          
-          // Main content
+
           Column(
             children: [
-
-              SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                  child: Column(
-                    children: [
-                      
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.notifications, color: Colors.white),
-                            onPressed: () {},
-                          ),
-                          const CircleAvatar(
-                            radius: 22,
-                            backgroundImage: AssetImage("assets/profile_image.png"),
-                          ),
-                        ],
-                      ),
-                      
-                      
-                      const SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: const [
-                                  Text(
-                                    "Hi, Yousef Yasser ",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 5, 114, 237),
-                                    ),
-                                  ),
-                                  Text(
-                                    "👋",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                ],
-                              ),
-                              const Text(
-                                "Find Your Career Path",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               
-              // Expanded white container with rounded top corners
+              CustomAppBar(),
+
+              
               Expanded(
                 child: Container(
                   width: double.infinity,
-                  margin: const EdgeInsets.only(top: 0.5), // Reduced top margin to account for the stacked layout
+                  margin: const EdgeInsets.only(top: 0.5),
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -102,21 +45,40 @@ class _HomeScreenState extends State<HomeScreen> {
                       topRight: Radius.circular(30),
                     ),
                   ),
-                  child: const Center(
-                    child: Text(
-                      "Your Content Here",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black87,
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        // Step progress indicator at the top
+                        StepProgressIndicator(
+                          currentStep: 2,
+                          totalSteps: 6,
+                          stepDescription: "Overview of UI/UX",
+                        ),
+                        const SizedBox(height: 20),
+
+                        // Information Cards
+                        _buildInfoCard(
+                          icon: Icons.lightbulb,
+                          color: Colors.orange,
+                          title: "Tips & Information",
+                          subtitle: "Learn about user interface and experience design And How To Make InterView.",
+                        ),
+                        _buildInfoCard(
+                          icon: Icons.lightbulb,
+                          color: Colors.orange,
+                          title: "Tips & Information",
+                          subtitle: "Learn about user interface and experience design And How To Make InterView.",
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
             ],
           ),
-          
-          
+
+          // Bottom Navigation Bar
           Positioned(
             bottom: 0,
             left: 0,
@@ -130,6 +92,79 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  /// **Reusable Card Widget (Icon-Based)**
+  Widget _buildInfoCard({
+    required IconData icon,
+    required Color color,
+    required String title,
+    required String subtitle,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 6, spreadRadius: 2),
+        ],
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            backgroundColor: color.withOpacity(0.2),
+            child: Icon(icon, color: color),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(subtitle, style: const TextStyle(fontSize: 14, color: Colors.grey)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// **Reusable Card Widget (Image-Based)**
+  Widget _buildInfoCardWithImage({
+    required String title,
+    required String subtitle,
+    required String imagePath,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 6, spreadRadius: 2),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                if (subtitle.isNotEmpty)
+                  Text(subtitle, style: const TextStyle(fontSize: 14, color: Colors.grey)),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Image.asset(imagePath, width: 50, height: 50),
         ],
       ),
     );

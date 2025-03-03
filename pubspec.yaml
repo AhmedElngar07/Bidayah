@@ -38,6 +38,19 @@ dependencies:
   flutter_bloc: ^9.0.0
   cloud_firestore: ^5.6.5
   curved_navigation_bar: ^1.0.6
+  percent_indicator: ^4.2.4
+
+
+
+
+
+
+
+
+
+
+
+
 
 dev_dependencies:
   flutter_test:

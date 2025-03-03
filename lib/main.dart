@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Montserrat', useMaterial3: true),
-        home:  HomeScreen(), // Set the initial screen
+        home:  HomePage(), // Set the initial screen
       ),
     );
   }
