@@ -1,16 +1,12 @@
 import 'package:bidayah/Cubits/Skill_cubit.dart';
+import 'package:bidayah/Screens/Home_Page.dart';
+import 'package:bidayah/Screens/Skill_selection_page.dart';
+import 'package:bidayah/Services/firebase_Services.dart';
+import 'package:bidayah/Services/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-// Firebase options
-import 'firebase_options.dart';
-
-// Screens
-import 'Screens/Interest_page.dart';
-import 'Screens/Skill_selection_page.dart';
-
-// Bloc
 
 
 void main() async {
@@ -26,15 +22,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<SkillCubit>(create: (context) => SkillCubit()), // ✅ Ensure SkillCubit is provided
+        BlocProvider<SkillCubit>(
+          create: (context) => SkillCubit(FirebaseService()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: 'Montserrat',
-          useMaterial3: true,
-        ),
-        home: const SkillSelectionPage(), // ✅ Set the initial screen
+        theme: ThemeData(fontFamily: 'Montserrat', useMaterial3: true),
+        home:  HomeScreen(), // Set the initial screen
       ),
     );
   }

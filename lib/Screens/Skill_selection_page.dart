@@ -1,8 +1,8 @@
 import 'package:bidayah/Cubits/Skill_cubit.dart';
 import 'package:bidayah/Cubits/skill_state.dart';
+import 'package:bidayah/Screens/Home_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 
 class SkillSelectionPage extends StatelessWidget {
@@ -12,83 +12,89 @@ class SkillSelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              decoration: const BoxDecoration(
-                color: Colors.white60,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 30),
-
-                  // 🔹 Title
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 28),
-                    child: Text(
-                      'Customize your RoadMap',
+            /// **Scrollable Content**
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Customize Your Roadmap',
                       style: TextStyle(
-                        color: Color(0xFF4F3C75),
+                        color: Colors.black,
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 20),
 
-                  const SizedBox(height: 20),
+                    /// First container - Skill Selection
+                    const SkillSelectionWidget(),
 
-                  const SkillSelectionWidget(), // 🔹 Skill selection widget
-                  const SizedBox(height: 20),
+                    const SizedBox(height: 16),
 
-                  const Expanded(child: SkillDetailsWidget()), // 🔹 Related skills & learning style
-                ],
+                    /// Second container - RoadMap Fields (No Sub-Skills)
+                    BlocBuilder<SkillCubit, SkillState>(
+                      builder: (context, state) {
+                        if (state is SkillSelected) {
+                          return const SkillDetailsWidget();
+                        }
+                        return const SizedBox();
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
 
-            // 🔹 Button at the bottom of the page (Enabled when learning style is selected)
-            Positioned(
-              left: 16,
-              right: 16,
-              bottom: 32,
-              child: BlocBuilder<SkillCubit, SkillState>(
-                builder: (context, state) {
-                  bool isEnabled = state is SkillSelected && state.selectedLearningStyle != null;
+            /// **Button at the Bottom**
+            BlocBuilder<SkillCubit, SkillState>(
+              builder: (context, state) {
+                bool isEnabled = state is SkillSelected && state.selectedLearningStyle != null;
 
-                  return SizedBox(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    child: ElevatedButton(
-                      onPressed: isEnabled
-                          ? () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const VisitorPage()),
-                        );
-                      }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: isEnabled ? Colors.black : Colors.grey[600],
-                        padding: const EdgeInsets.all(16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                return Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  color: Colors.white, // Optional: Add background color if needed
+                  child: ElevatedButton(
+                    onPressed: isEnabled
+                        ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>  HomeScreen(),
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            'Customize your RoadMap',
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          ),
-                          SizedBox(width: 8),
-                          Icon(Icons.arrow_forward, color: Colors.white),
-                        ],
+                      );
+                    }
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isEnabled
+                          ? const Color.fromARGB(255, 18, 49, 97)
+                          : Colors.grey[400],
+                      padding: const EdgeInsets.all(16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                  );
-                },
-              ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Customize your RoadMap',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                        SizedBox(width: 8),
+                        Icon(Icons.auto_fix_high, color: Colors.white),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -97,80 +103,37 @@ class SkillSelectionPage extends StatelessWidget {
   }
 }
 
-/// 🔹 Widget for Skill Selection
+/// Widget to display the list of skills
 class SkillSelectionWidget extends StatelessWidget {
   const SkillSelectionWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CustomContainer(
-      title: "Select a Field",
-      child: BlocBuilder<SkillCubit, SkillState>(
-        builder: (context, state) {
-          return Wrap(
-            spacing: 15,
-            runSpacing: 10,
-            children: ['Programming', 'Design', 'Marketing'].map((skill) {
-              return SkillButton(
-                text: skill,
-                isSelected: state is SkillSelected && state.skill == skill,
-                onTap: () => context.read<SkillCubit>().selectSkill(skill),
-              );
-            }).toList(),
-          );
-        },
-      ),
-    );
-  }
-}
-
-/// 🔹 Widget for Related Skills & Learning Style Selection
-class SkillDetailsWidget extends StatelessWidget {
-  const SkillDetailsWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
     return BlocBuilder<SkillCubit, SkillState>(
       builder: (context, state) {
-        if (state is SkillSelected) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                // Related Skills
-                CustomContainer(
-                  title: "Related Skills for ${state.skill}",
-                  child: Wrap(
-                    spacing: 12,
-                    runSpacing: 8,
-                    children: state.relatedSkills.map((subSkill) {
-                      return SkillButton(
-                        text: subSkill,
-                        isSelected: state.selectedRelatedSkills.contains(subSkill),
-                        onTap: () => context.read<SkillCubit>().toggleRelatedSkill(subSkill),
-                      );
-                    }).toList(),
-                  ),
-                ),
+        if (state is SkillLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is SkillError) {
+          return Center(
+            child: Text(state.message, style: const TextStyle(color: Colors.red)),
+          );
+        } else if (state is SkillsLoaded || state is SkillSelected) {
+          List<String> skills = state is SkillsLoaded
+              ? state.skills
+              : (state as SkillSelected).skills;
 
-                const SizedBox(height: 16),
-
-                // Learning Style Selection (Only show if a related skill is selected)
-                if (state.selectedRelatedSkills.isNotEmpty)
-                  CustomContainer(
-                    title: "Choose a Learning Style",
-                    child: Wrap(
-                      spacing: 12,
-                      runSpacing: 8,
-                      children: ['Reading', 'Video', 'Audio'].map((learningStyle) {
-                        return SkillButton(
-                          text: learningStyle,
-                          isSelected: state.selectedLearningStyle == learningStyle,
-                          onTap: () => context.read<SkillCubit>().selectLearningStyle(learningStyle),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-              ],
+          return CustomContainer(
+            title: "Select a Field",
+            child: Wrap(
+              spacing: 15,
+              runSpacing: 10,
+              children: skills.map((skill) {
+                return SkillButton(
+                  text: skill,
+                  isSelected: state is SkillSelected && state.selectedSkill == skill,
+                  onTap: () => context.read<SkillCubit>().selectSkill(skill),
+                );
+              }).toList(),
             ),
           );
         }
@@ -180,7 +143,60 @@ class SkillDetailsWidget extends StatelessWidget {
   }
 }
 
-/// 🔹 Reusable Container Widget
+/// Widget to display roadmap fields & learning style (No Sub-Skills)
+class SkillDetailsWidget extends StatelessWidget {
+  const SkillDetailsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SkillCubit, SkillState>(
+      builder: (context, state) {
+        if (state is SkillSelected) {
+          return Column(
+            children: [
+              CustomContainer(
+                title: "RoadMap Fields for ${state.selectedSkill}",
+                child: Wrap(
+                  spacing: 12,
+                  runSpacing: 8,
+                  children: state.roadMapFields.map((field) {
+                    return SkillButton(
+                      text: field,
+                      isSelected: state.selectedRoadMapField == field,
+                      onTap: () => context.read<SkillCubit>().selectRoadMapField(field),
+                    );
+                  }).toList(),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Learning Style Selection (Appears only after selecting a RoadMap field)
+              if (state.selectedRoadMapField != null)
+                CustomContainer(
+                  title: "Choose a Learning Style",
+                  child: Wrap(
+                    spacing: 12,
+                    runSpacing: 8,
+                    children: ['Reading', 'Video', 'Audio'].map((learningStyle) {
+                      return SkillButton(
+                        text: learningStyle,
+                        isSelected: state.selectedLearningStyle == learningStyle,
+                        onTap: () => context.read<SkillCubit>().selectLearningStyle(learningStyle),
+                      );
+                    }).toList(),
+                  ),
+                ),
+            ],
+          );
+        }
+        return const SizedBox();
+      },
+    );
+  }
+}
+
+/// Custom container for displaying selections
 class CustomContainer extends StatelessWidget {
   final String title;
   final Widget child;
@@ -191,10 +207,10 @@ class CustomContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20.0),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFFFF9F23).withOpacity(0.7),
+        color: const Color(0xFF8AAEE0).withOpacity(0.7),
         borderRadius: BorderRadius.circular(15),
         border: Border.all(color: Colors.white.withOpacity(0.2), width: 1),
       ),
@@ -203,9 +219,11 @@ class CustomContainer extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-                color: Color(0xFF4F3C75),
-                fontSize: 22, fontWeight: FontWeight.bold),
+            style:  TextStyle(
+              color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.7),
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 12),
           child,
@@ -215,40 +233,34 @@ class CustomContainer extends StatelessWidget {
   }
 }
 
-/// 🔹 Reusable Skill Button Widget
+/// Custom button for selecting skills and roadmap fields
 class SkillButton extends StatelessWidget {
   final String text;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const SkillButton({super.key, required this.text, required this.isSelected, required this.onTap});
+  const SkillButton({
+    super.key,
+    required this.text,
+    required this.isSelected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
-        backgroundColor: isSelected ? const Color(0xFFB87770) : Colors.white.withOpacity(0.2),
+        backgroundColor: isSelected
+            ? const Color.fromARGB(49, 9, 68, 247)
+            : const Color(0xFFF0F3FA).withOpacity(0.2),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: Text(
         text,
-        style: const TextStyle(color: Colors.white, fontSize: 16),
+        style: const TextStyle(color: Color(0xFFF0F3FA), fontSize: 16),
       ),
-    );
-  }
-}
-
-/// 🔹 Visitor Page (Next Page)
-class VisitorPage extends StatelessWidget {
-  const VisitorPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Visitor Page")),
-      body: const Center(child: Text("Welcome, Visitor!")),
     );
   }
 }

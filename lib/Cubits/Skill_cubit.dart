@@ -1,61 +1,134 @@
+import 'package:bidayah/Services/firebase_Services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'skill_state.dart';
 
 class SkillCubit extends Cubit<SkillState> {
-  SkillCubit() : super(SkillInitial());
+  final FirebaseService _firebaseService;
 
-  void selectSkill(String skill) {
-    final relatedSkills = _getRelatedSkills(skill);
-    emit(SkillSelected(
-      skill: skill,
-      relatedSkills: relatedSkills,
-      selectedRelatedSkills: {},
-      selectedLearningStyle: null,
-    ));
+  SkillCubit(this._firebaseService) : super(SkillInitial()) {
+    _loadSkills();
   }
 
+  /// Load skills from Firestore
+  Future<void> _loadSkills() async {
+    emit(SkillLoading());
+    try {
+      final skills = await _firebaseService.fetchSkills();
+      emit(SkillsLoaded(skills: skills));
+    } catch (e) {
+      emit(SkillError(message: 'Failed to load skills: $e'));
+    }
+  }
+
+  /// Select a skill and fetch roadmap fields
+  void selectSkill(String skill) async {
+    if (state is SkillsLoaded || state is SkillSelected) {
+      List<String> currentSkills = [];
+
+      if (state is SkillsLoaded) {
+        currentSkills = (state as SkillsLoaded).skills;
+      } else if (state is SkillSelected) {
+        currentSkills = (state as SkillSelected).skills;
+      }
+
+      emit(SkillLoading());
+
+      try {
+        final roadMapFields = await _firebaseService.fetchRoadMapFields(skill);
+        emit(
+          SkillSelected(
+            skills: currentSkills,
+            selectedSkill: skill,
+            roadMapFields: roadMapFields,
+            selectedRoadMapField: null,
+            selectedSubSkills: [],
+            selectedRelatedSkills: [],
+            selectedLearningStyle: null,
+          ),
+        );
+      } catch (e) {
+        emit(SkillError(message: 'Failed to load RoadMapFields: $e'));
+      }
+    }
+  }
+
+  /// Select a roadmap field and fetch sub-skills
+  void selectRoadMapField(String roadMapField) async {
+    if (state is SkillSelected) {
+      final currentState = state as SkillSelected;
+      emit(SkillLoading());
+
+      try {
+        final subSkills = await _firebaseService.fetchSubSkills(
+          currentState.selectedSkill,
+          roadMapField,
+        );
+
+        emit(
+          SkillSelected(
+            skills: currentState.skills,
+            selectedSkill: currentState.selectedSkill,
+            roadMapFields: currentState.roadMapFields,
+            selectedRoadMapField: roadMapField,
+            selectedSubSkills: subSkills,
+            selectedRelatedSkills: [],
+            selectedLearningStyle: null,
+          ),
+        );
+      } catch (e) {
+        emit(SkillError(message: 'Failed to load sub-skills: $e'));
+      }
+    }
+  }
+
+  /// ✅ **Toggle selection of a related skill (sub-skill)**
   void toggleRelatedSkill(String subSkill) {
     if (state is SkillSelected) {
       final currentState = state as SkillSelected;
-      final updatedSelectedSkills = Set<String>.from(currentState.selectedRelatedSkills);
+      List<String> updatedRelatedSkills = List.from(
+        currentState.selectedRelatedSkills,
+      );
 
-      if (updatedSelectedSkills.contains(subSkill)) {
-        updatedSelectedSkills.remove(subSkill);
+      if (updatedRelatedSkills.contains(subSkill)) {
+        updatedRelatedSkills.remove(subSkill);
       } else {
-        updatedSelectedSkills.add(subSkill);
+        updatedRelatedSkills.add(subSkill);
       }
 
-      emit(SkillSelected(
-        skill: currentState.skill,
-        relatedSkills: currentState.relatedSkills,
-        selectedRelatedSkills: updatedSelectedSkills,
-        selectedLearningStyle: currentState.selectedLearningStyle,
-      ));
+      emit(
+        SkillSelected(
+          skills: currentState.skills,
+          selectedSkill: currentState.selectedSkill,
+          roadMapFields: currentState.roadMapFields,
+          selectedRoadMapField: currentState.selectedRoadMapField,
+          selectedSubSkills: currentState.selectedSubSkills,
+          selectedRelatedSkills: updatedRelatedSkills,
+          selectedLearningStyle:
+          updatedRelatedSkills.isNotEmpty
+              ? currentState.selectedLearningStyle
+              : null, // Clear learning style if no sub-skills are selected
+        ),
+      );
     }
   }
 
+  /// ✅ **Select a static learning style**
   void selectLearningStyle(String learningStyle) {
     if (state is SkillSelected) {
       final currentState = state as SkillSelected;
-      emit(SkillSelected(
-        skill: currentState.skill,
-        relatedSkills: currentState.relatedSkills,
-        selectedRelatedSkills: currentState.selectedRelatedSkills,
-        selectedLearningStyle: learningStyle,
-      ));
-    }
-  }
-
-  List<String> _getRelatedSkills(String skill) {
-    switch (skill) {
-      case 'Programming':
-        return ['Python', 'Dart', 'JavaScript', 'C++'];
-      case 'Design':
-        return ['UI/UX', 'Graphic Design', 'Illustration', 'Typography'];
-      case 'Marketing':
-        return ['SEO', 'Social Media', 'Branding', 'Advertising'];
-      default:
-        return [];
+      emit(
+        SkillSelected(
+          skills: currentState.skills,
+          selectedSkill: currentState.selectedSkill,
+          roadMapFields: currentState.roadMapFields,
+          selectedRoadMapField: currentState.selectedRoadMapField,
+          selectedSubSkills: currentState.selectedSubSkills,
+          selectedRelatedSkills: currentState.selectedRelatedSkills,
+          selectedLearningStyle:
+          learningStyle, // ✅ Update learning style selection
+        ),
+      );
     }
   }
 }
