@@ -51,9 +51,9 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         // Step progress indicator at the top
                         StepProgressIndicator(
-                          currentStep: 2,
-                          totalSteps: 6,
-                          stepDescription: "Overview of UI/UX",
+                          currentStep: 5,
+                          totalSteps:10,
+                          stepDescription: "Your RoadMap",
                         ),
                         const SizedBox(height: 20),
 

@@ -1,6 +1,8 @@
 import 'package:bidayah/Cubits/Skill_cubit.dart';
 import 'package:bidayah/Screens/Home_Page.dart';
 import 'package:bidayah/Screens/Skill_selection_page.dart';
+import 'package:bidayah/Screens/start.dart';
+import 'package:bidayah/Screens/welcome_screen.dart';
 import 'package:bidayah/Services/firebase_Services.dart';
 import 'package:bidayah/Services/firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,9 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, // Ensure this is set
+  );
   runApp(const MyApp());
 }
 
