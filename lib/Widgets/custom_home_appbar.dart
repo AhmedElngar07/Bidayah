@@ -1,6 +1,11 @@
+
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget {
+  
+
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -9,11 +14,9 @@ class CustomAppBar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 30),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start, 
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 40),
-                
-                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -27,21 +30,15 @@ class CustomAppBar extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 236, 237, 237),
+                                color: Color.fromARGB(255, 0, 0, 0),
                               ),
                             ),
-                            Text(
-                              "👋",
-                              style: TextStyle(fontSize: 20),
-                            ),
+                            Text("👋", style: TextStyle(fontSize: 20)),
                           ],
                         ),
                         const Text(
                           "Find Your Career Path",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white70,
-                          ),
+                          style: TextStyle(fontSize: 14, color: Color.fromARGB(179, 36, 35, 35)),
                         ),
                       ],
                     ),
@@ -51,23 +48,16 @@ class CustomAppBar extends StatelessWidget {
             ),
           ),
 
-          
-          Positioned(
-            top: 10,
-            left: 10,
-            child: Builder(
-              builder: (context) {
-                return IconButton(
-                  icon: const Icon(Icons.menu, color: Colors.white, size: 28),
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                );
-              },
-            ),
-          ),
+          // Positioned(
+          //   top: 10,
+          //   left: 10,
+          //   child: RiverMenuBtn(
+          //     onPress: () {
+          //       scaffoldKey.currentState?.openDrawer(); // ✅ Opens drawer
+          //     },
+          //   ),
+          // ),
 
-          // Absolute Positioned Top-Right Profile & Notification Icons
           Positioned(
             top: 10,
             right: 10,
