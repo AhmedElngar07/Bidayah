@@ -1,4 +1,3 @@
-import 'package:bidayah/screens/profile_screen.dart';
 import 'package:bidayah/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:bidayah/widgets/custom_scaffold.dart';
@@ -129,21 +128,6 @@ class WelcomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const SignUpScreen(),
-                              ),
-                            ),
-                        color: Colors.transparent,
-                        textColor: Colors.white,
-                        borderColor: Colors.white,
-                      ),
-                    ),
-                    Expanded(
-                      child: WelcomeButton(
-                        buttonText: 'profile',
-                        onTap:
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ProfileScreen(),
                               ),
                             ),
                         color: Colors.transparent,

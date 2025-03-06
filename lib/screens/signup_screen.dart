@@ -1,11 +1,15 @@
 import 'package:bidayah/screens/login_screen.dart';
+import 'package:bidayah/services/auth_service.dart';
 import 'package:bidayah/widgets/button.dart';
 import 'package:bidayah/widgets/passwordtextfield.dart';
 import 'package:bidayah/widgets/textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:bidayah/widgets/theme.dart';
 import 'package:bidayah/widgets/custom_scaffold.dart';
+
+ final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -54,6 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       CustomTextField(
                         label: 'Full Name',
                         hintText: 'Enter Full Name',
+                        controller: _fullNameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Full name';
@@ -84,6 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         label: 'Email',
                         hintText: 'Enter Email',
                         keyboardType: TextInputType.emailAddress,
+                        controller: _emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
@@ -113,6 +119,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       CustomPasswordTextField(
                         label: 'Password',
                         hintText: 'Enter Password',
+                        controller: _passwordController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Password';
@@ -166,8 +173,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       // Use CustomButton for Sign Up
                       CustomButton(
                         text: 'Sign up',
-                        onPressed: () {
-                          // Handle sign-up logic
+                        onPressed: () async{
+                         await AuthService().signup(
+                        fullName: _fullNameController.text,
+                        email: _emailController.text,
+                         password: _passwordController.text, 
+                        
+                         );
+
+
                         },
                         backgroundColor:
                             lightColorScheme.primary, // Your theme color
@@ -205,18 +219,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(height: 30.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          IconButton(
-                            icon: Logo(Logos.google),
-                            iconSize: 24.0, // Smaller social media icons
-                            onPressed: () {},
-                          ),
-                          IconButton(
-                            icon: Logo(Logos.linkedin),
-                            iconSize: 24.0, // Smaller social media icons
-                            onPressed: () {},
-                          ),
-                        ],
+                        
                       ),
                       const SizedBox(height: 25.0),
                       Row(

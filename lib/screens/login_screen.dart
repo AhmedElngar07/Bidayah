@@ -1,12 +1,15 @@
 import 'package:bidayah/screens/signup_screen.dart';
+import 'package:bidayah/services/auth_service.dart';
 import 'package:bidayah/widgets/button.dart';
 import 'package:bidayah/widgets/passwordtextfield.dart';
 import 'package:bidayah/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:bidayah/widgets/custom_scaffold.dart';
 import 'package:bidayah/widgets/theme.dart';
-import 'package:icons_plus/icons_plus.dart';
 
+
+final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -45,6 +48,7 @@ class LoginScreen extends StatelessWidget {
                       label: 'Email',
                       hintText: 'm@example.com',
                       keyboardType: TextInputType.emailAddress,
+                      controller: _emailController,
                       decoration: InputDecoration(
                         labelText: 'Email',
                         labelStyle: TextStyle(
@@ -52,6 +56,7 @@ class LoginScreen extends StatelessWidget {
                           fontSize: 14.0, // Smaller text size
                         ),
                         hintText: 'Enter your Email',
+                        
                         hintStyle: const TextStyle(color: Colors.black26),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -68,6 +73,7 @@ class LoginScreen extends StatelessWidget {
                     CustomPasswordTextField(
                       label: 'Password',
                       hintText: 'Enter your password',
+                      controller: _passwordController,
                       decoration: InputDecoration(
                         labelText: 'Password',
                         labelStyle: TextStyle(
@@ -117,9 +123,17 @@ class LoginScreen extends StatelessWidget {
                     // Use CustomButton for Sign In
                     CustomButton(
                       text: 'Log in',
-                      onPressed: () {
-                        // Handle sign-in logic
-                      },
+                      onPressed: () async{
+                        await AuthService().login(
+                        email: _emailController.text,
+                         password: _passwordController.text,
+                        context: context
+                        
+                         );
+
+
+                        },
+                      
                       backgroundColor:
                           lightColorScheme.primary, // Your theme color
                       textColor: Colors.white, // Ensure white text
@@ -156,18 +170,7 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(height: 30.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                          icon: Logo(Logos.google),
-                          iconSize: 24.0, // Smaller social media icons
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: Logo(Logos.linkedin),
-                          iconSize: 24.0, // Smaller social media icons
-                          onPressed: () {},
-                        ),
-                      ],
+                      
                     ),
                     const SizedBox(height: 25.0),
                     Row(

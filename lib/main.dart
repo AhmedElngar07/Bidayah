@@ -1,8 +1,16 @@
-import 'package:bidayah/screens/welcome_screen.dart';
+import 'package:bidayah/Cubits/Skill_cubit.dart';
+import 'package:bidayah/Screens/profile_screen.dart';
+import 'package:bidayah/Services/firebase_Services.dart';
+import 'package:bidayah/Services/firebase_options.dart';
 import 'package:flutter/material.dart';
-import 'package:bidayah/widgets/theme.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, // Ensure this is set
+  );
   runApp(const MyApp());
 }
 
@@ -11,22 +19,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Bidayah',
-      theme: ThemeData(
-        fontFamily: 'Montserrat',
-        colorScheme: lightColorScheme,
-        useMaterial3: true,
-        // Add other theme properties as needed
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<SkillCubit>(
+          create: (context) => SkillCubit(FirebaseService()),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'Montserrat', useMaterial3: true),
+        home: ProfileScreen(), // Set the initial screen
       ),
-      initialRoute: '/', // Start with the welcome screen
-      routes: {
-        '/': (context) => const WelcomeScreen(),
-        //'/login': (context) => const SignInScreen(),
-        // '/signup': (context) => const SignUpScreen(),
-        //'/home': (context) => const HomeScreen(), // Your main app screen
-      },
     );
   }
 }
