@@ -39,11 +39,11 @@ class LoginScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 30.0,
                         fontWeight: FontWeight.w900,
-                        color: lightColorScheme.primary,
+                        color: Color.fromARGB(255, 65, 111, 223),
                       ),
                     ),
                     const SizedBox(height: 40.0),
-                    // Use CustomTextField for email
+                    
                     CustomTextField(
                       label: 'Email',
                       hintText: 'm@example.com',
@@ -126,10 +126,10 @@ class LoginScreen extends StatelessWidget {
                       onPressed: () async{
                         await AuthService().login(
                         email: _emailController.text,
-                         password: _passwordController.text,
+                          password: _passwordController.text,
                         context: context
                         
-                         );
+                          );
 
 
                         },

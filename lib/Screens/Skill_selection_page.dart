@@ -15,7 +15,7 @@ class SkillSelectionPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// **Scrollable Content**
+            
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05),
