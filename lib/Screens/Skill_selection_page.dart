@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SkillSelectionPage extends StatelessWidget {
-  const SkillSelectionPage({super.key});
+  const SkillSelectionPage( {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class SkillSelectionPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// **Scrollable Content**
+            
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(

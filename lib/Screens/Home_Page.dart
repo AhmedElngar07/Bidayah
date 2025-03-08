@@ -1,9 +1,8 @@
-import 'package:bidayah/Screens/RoadMap_Screen.dart';
-import 'package:bidayah/Widgets/Home_view.dart'; // Correct import of HomeView
+import 'dart:math' as match;
+import 'package:bidayah/Widgets/Home_view.dart';
 import 'package:bidayah/Widgets/Side_menu.dart';
-import 'package:bidayah/Widgets/Step_Progress.dart';
-import 'package:bidayah/Widgets/custom_home_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 import 'package:rive/rive.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,9 +13,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  final int _currentIndex = 2;
-  late AnimationController _animationController;
+  late AnimationController? _animationController;
+
   late Animation<double> _sidebarAnim;
+
   late SMIBool _menuBtn;
 
   final SpringDescription _springDesc = const SpringDescription(
@@ -27,16 +27,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    super.initState();
-
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 200),
+      upperBound: 1,
       vsync: this,
     );
 
     _sidebarAnim = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+      CurvedAnimation(parent: _animationController!, curve: Curves.linear),
     );
+    super.initState();
   }
 
   void _onMenuIconInit(Artboard artboard) {
@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       artboard,
       "State Machine",
     );
+
     if (controller != null) {
       artboard.addController(controller);
       _menuBtn = controller.findInput<bool>("isOpen") as SMIBool;
@@ -52,17 +53,113 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   void onMenuPress() {
-    _menuBtn.value = !_menuBtn.value;
+    if (_menuBtn.value) {
+      final springAnim = SpringSimulation(_springDesc, 0, 1, 0);
+      _animationController?.animateWith(springAnim);
+    } else {
+      _animationController?.reverse();
+    }
+    _menuBtn.change(!_menuBtn.value);
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animationController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return HomeView();
+    return Scaffold(
+      extendBody: true,
+      body: Stack(
+        children: [
+          Positioned(child: Container(color: Color(0xFF17203A))),
+
+          AnimatedBuilder(
+            animation: _sidebarAnim,
+            builder: (BuildContext context, Widget? child) {
+              return Transform(
+                alignment: Alignment.center,
+                transform:
+                    Matrix4.identity()
+                      ..setEntry(3, 2, 0.001)
+                      ..rotateY(
+                        ((1 - _sidebarAnim.value) * -30) * match.pi / 180,
+                      )
+                      ..translate((1 - _sidebarAnim.value) * -500),
+                child: child,
+              );
+            },
+            child: FadeTransition(
+              opacity: _sidebarAnim,
+              child: const SideMenu(),
+            ),
+          ),
+
+          AnimatedBuilder(
+            animation: _sidebarAnim,
+            builder: (context, child) {
+              return Transform.scale(
+                scale: 1 - _sidebarAnim.value * 0.1,
+                child: Transform.translate(
+                  offset: Offset(_sidebarAnim.value * 265, 0),
+                  child: Transform(
+                    alignment: Alignment.center,
+                    transform:
+                        Matrix4.identity()
+                          ..setEntry(3, 2, 0.001)
+                          ..rotateY((_sidebarAnim.value * 30) * match.pi / 180),
+                    child: child,
+                  ),
+                ),
+              );
+            },
+            child: HomeView(),
+          ),
+
+          AnimatedBuilder(
+            animation: _sidebarAnim,
+            builder: (context, child) {
+              return SafeArea(
+                child: Row(
+                  children: [SizedBox(width: _sidebarAnim.value * 216), child!],
+                ),
+              );
+            },
+            child: GestureDetector(
+              onTap: onMenuPress,
+              child: Container(
+                width: 44,
+                height: 44,
+                margin: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(22),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromARGB(
+                        255,
+                        18,
+                        18,
+                        18,
+                      ).withOpacity(0.2),
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+
+                child: RiveAnimation.asset(
+                  'assets/menu_button.riv',
+                  stateMachines: const ["State Machine"],
+                  animations: ["open", "close"],
+                  onInit: _onMenuIconInit,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

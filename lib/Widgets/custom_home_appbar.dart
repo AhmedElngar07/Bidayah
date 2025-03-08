@@ -48,22 +48,16 @@ class CustomAppBar extends StatelessWidget {
             ),
           ),
 
-          // Positioned(
-          //   top: 10,
-          //   left: 10,
-          //   child: RiverMenuBtn(
-          //     onPress: () {
-          //       scaffoldKey.currentState?.openDrawer(); // ✅ Opens drawer
-          //     },
-          //   ),
-          // ),
           Positioned(
             top: 10,
             right: 10,
             child: Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.notifications, color: Colors.white),
+                  icon: const Icon(
+                    Icons.notifications,
+                    color: Color.fromARGB(255, 13, 13, 13),
+                  ),
                   onPressed: () {},
                 ),
                 const CircleAvatar(
