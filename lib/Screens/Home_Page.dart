@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  int _currentIndex = 2;
+  final int _currentIndex = 2;
   late AnimationController _animationController;
   late Animation<double> _sidebarAnim;
   late SMIBool _menuBtn;
