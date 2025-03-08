@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // Import SVG package
 
 class SkillsPage extends StatefulWidget {
   final int initialTabIndex;
@@ -14,6 +13,7 @@ class SkillsPage extends StatefulWidget {
 class _SkillsPageState extends State<SkillsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late List<bool> _isExpanded; // Ensure state persists
 
   @override
   void initState() {
@@ -23,7 +23,75 @@ class _SkillsPageState extends State<SkillsPage>
       vsync: this,
       initialIndex: widget.initialTabIndex,
     );
+
+    _isExpanded = List.generate(skillTopics.length, (index) => false);
   }
+
+  final List<Map<String, dynamic>> skillTopics = [
+    {
+      "topic": "Graphic Design",
+      "skills": [
+        {
+          "name": "Adobe Photoshop",
+          "description": "Photo editing and design tool.",
+          "logo": "assets/icons/photoshop.svg",
+        },
+        {
+          "name": "Illustration",
+          "description": "Creating vector-based illustrations.",
+          "logo": "assets/icons/illustration.svg",
+        },
+        {
+          "name": "Branding",
+          "description": "Developing a visual brand identity.",
+          "logo": "assets/icons/branding.svg",
+        },
+      ],
+    },
+    {
+      "topic": "UI/UX Design",
+      "skills": [
+        {
+          "name": "Wireframing",
+          "description": "Creating layout structures for interfaces.",
+          "logo": "assets/icons/wireframing.svg",
+        },
+        {
+          "name": "Prototyping",
+          "description": "Building interactive UI mockups.",
+          "logo": "assets/icons/prototyping.svg",
+        },
+        {
+          "name": "Usability Testing",
+          "description": "Testing interfaces for better user experience.",
+          "logo": "assets/icons/usability_testing.svg",
+        },
+      ],
+    },
+  ];
+
+  final List<Map<String, dynamic>> badges = [
+    {
+      "name": "Photoshop Mastery",
+      "earned": true,
+      "icon": "assets/photoshop-svgrepo-com.svg",
+    },
+    {
+      "name": "Illustration Expert",
+      "earned": true,
+      "icon": "assets/pen-writer-svgrepo-com.svg",
+    },
+    {
+      "name": "Typography Guru",
+      "earned": true,
+      "icon": "assets/type-svgrepo-com.svg",
+    },
+    {
+      "name": "Motion Graphics Pro",
+      "earned": true,
+      "icon": "assets/panel-poster-svgrepo-com.svg",
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -51,42 +119,52 @@ class _SkillsPageState extends State<SkillsPage>
   }
 
   Widget _buildSkillsSection() {
-    List<Map<String, String>> skills = [
-      {"name": "Adobe Photoshop", "description": "Photo editing software."},
-      {
-        "name": "UI/UX Design",
-        "description": "Designing user-friendly interfaces.",
-      },
-      {
-        "name": "Illustration",
-        "description": "Creating digital illustrations.",
-      },
-      {"name": "Branding", "description": "Developing brand identity."},
-      {"name": "Motion Graphics", "description": "Animating graphics."},
-    ];
-
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: skills.length,
+      itemCount: skillTopics.length,
       itemBuilder: (context, index) {
-        return Tooltip(
-          message: skills[index]["description"]!,
-          decoration: BoxDecoration(
-            color: Colors.black87,
-            borderRadius: BorderRadius.circular(10),
+        return Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: const TextStyle(color: Colors.white, fontSize: 14),
-          child: Card(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: ListTile(
-              title: Text(
-                skills[index]["name"]!,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+          child: Column(
+            children: [
+              ListTile(
+                title: Text(
+                  skillTopics[index]["topic"],
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                trailing: Icon(
+                  _isExpanded[index]
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down,
+                  color: Colors.grey,
+                ),
+                onTap: () {
+                  setState(() {
+                    _isExpanded[index] = !_isExpanded[index];
+                  });
+                },
               ),
-            ),
+              if (_isExpanded[index])
+                Column(
+                  children:
+                      skillTopics[index]["skills"]
+                          .map<Widget>(
+                            (skill) => ListTile(
+                              leading: SvgPicture.asset(
+                                skill["logo"],
+                                height: 30,
+                                width: 30,
+                              ),
+                              title: Text(skill["name"]),
+                              subtitle: Text(skill["description"]),
+                            ),
+                          )
+                          .toList(),
+                ),
+            ],
           ),
         );
       },
@@ -94,47 +172,8 @@ class _SkillsPageState extends State<SkillsPage>
   }
 
   Widget _buildBadgesSection() {
-    List<Map<String, dynamic>> badges = [
-      {
-        "name": "Photoshop Mastery",
-        "earned": true,
-        "icon": FontAwesomeIcons.brush,
-        "color": Colors.blueAccent,
-      },
-      {
-        "name": "Advanced Illustrator",
-        "earned": true,
-        "icon": LineAwesomeIcons.draw_polygon,
-        "color": Colors.orange,
-      },
-      {
-        "name": "Typography Expert",
-        "earned": false,
-        "icon": FontAwesomeIcons.font,
-        "color": Colors.grey,
-      },
-      {
-        "name": "Logo Design Pro",
-        "earned": true,
-        "icon": FontAwesomeIcons.shapes,
-        "color": Colors.purple,
-      },
-      {
-        "name": "Motion Graphics Specialist",
-        "earned": false,
-        "icon": FontAwesomeIcons.video,
-        "color": Colors.grey,
-      },
-      {
-        "name": "UI/UX Innovator",
-        "earned": true,
-        "icon": FontAwesomeIcons.pencilRuler,
-        "color": Colors.green,
-      },
-    ];
-
     return Padding(
-      padding: const EdgeInsets.only(top: 30), // Moves the first row down
+      padding: const EdgeInsets.only(top: 30),
       child: GridView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -146,23 +185,13 @@ class _SkillsPageState extends State<SkillsPage>
         itemBuilder: (context, index) {
           return Column(
             children: [
-              FaIcon(
-                badges[index]["icon"],
-                color:
-                    badges[index]["earned"]
-                        ? badges[index]["color"]
-                        : Colors.black45,
-                size: 40,
-              ),
+              SvgPicture.asset(badges[index]["icon"], height: 60, width: 60),
               const SizedBox(height: 5),
               Text(
                 badges[index]["name"],
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color:
-                      badges[index]["earned"]
-                          ? badges[index]["color"]
-                          : Colors.black45,
+                style: const TextStyle(
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
               ),

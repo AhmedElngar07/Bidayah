@@ -47,6 +47,7 @@ dependencies:
   eva_icons_flutter: ^3.1.0
   line_awesome_flutter: ^2.0.0
   font_awesome_flutter: ^10.7.0
+  flutter_svg: ^2.0.9
 
 
 
@@ -82,6 +83,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/pen-writer-svgrepo-com.svg
+    - assets/photoshop-svgrepo-com.svg
+    - assets/type-svgrepo-com.svg
+    - assets/panel-poster-svgrepo-com.svg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

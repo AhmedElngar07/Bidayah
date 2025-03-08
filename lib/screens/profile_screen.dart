@@ -1,8 +1,9 @@
 import 'dart:io';
+import 'package:bidayah/Widgets/BottomNavBar%20.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:bidayah/Screens/skills_screen.dart'; // Import SkillsPage
+import 'package:bidayah/Screens/skills_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -36,210 +37,296 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Color(0xFF3A47D5), Color(0xFF000000)],
+      body: Stack(
+        children: [
+          // **Background Image**
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/BackGround.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-        child: Stack(
-          children: [
-            // White Curved Section
-            Positioned(
-              top: screenHeight * 0.18,
-              child: Container(
-                width: screenWidth,
-                height: screenHeight * 0.82,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
+
+          Column(
+            children: [
+              const SizedBox(height: 10),
+
+              // **Settings Icon**
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 5, right: 15),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                      size: 26,
+                    ),
+                    onPressed: () {},
                   ),
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 90),
-                      const Text(
-                        'Mahinour Ashraf',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const Text(
-                        'Graphic Designer - Level: Expert',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
-                      const SizedBox(height: 15),
+              ),
 
-                      // Pressable Container for Skills
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SkillsPage(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Wrap(
-                            spacing: 8.0,
-                            runSpacing: 6.0,
-                            alignment: WrapAlignment.center,
+              // **Main White Section**
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 5),
+
+                        // **Profile Picture**
+                        Center(
+                          child: Stack(
                             children: [
-                              _buildSkillBadge('Adobe Photoshop'),
-                              _buildSkillBadge('UI/UX Design'),
-                              _buildSkillBadge('Illustration'),
-                              _buildSkillBadge('Branding'),
-                              _buildSkillBadge('Motion Graphics'),
+                              GestureDetector(
+                                onTap: _pickImage,
+                                child: CircleAvatar(
+                                  radius: 60,
+                                  backgroundColor: Colors.white,
+                                  backgroundImage:
+                                      _image != null
+                                          ? FileImage(_image!) as ImageProvider
+                                          : const NetworkImage(
+                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCvTrUGSCZo920TjHoAvWnjoTD9LD3OL26Nw&s',
+                                          ),
+                                ),
+                              ),
+
+                              // **Badge Icon**
+                              Positioned(
+                                bottom: 5,
+                                right: 5,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => const SkillsPage(
+                                              initialTabIndex: 1,
+                                            ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: const LinearGradient(
+                                        colors: [
+                                          Color(0xFFD4A5E6),
+                                          Color.fromARGB(255, 168, 202, 230),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 4,
+                                          spreadRadius: 1,
+                                          offset: const Offset(2, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: const Icon(
+                                      Icons.emoji_events,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      ),
 
-                      const SizedBox(height: 30),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Mahinour Ashraf',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const Text(
+                          'Graphic Designer - Level: Expert',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
 
-                      // Profile Options Buttons
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: GridView.count(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          shrinkWrap: true,
-                          childAspectRatio: 2.5,
-                          physics: const NeverScrollableScrollPhysics(),
+                        const SizedBox(height: 8),
+
+                        // **Pressable Skills Badges**
+                        Wrap(
+                          spacing: -10,
+                          runSpacing: -10,
+                          alignment: WrapAlignment.center,
                           children: [
-                            _buildProfileButton('Roadmap'),
-                            _buildProfileButton('CV Builder'),
-                            _buildProfileButton('Purchased Items'),
-                            _buildProfileButton('History Chats'),
+                            _buildSkillBadge(Icons.brush, [
+                              Colors.pink.shade200,
+                              Colors.orange.shade200,
+                            ]),
+                            _buildSkillBadge(Icons.design_services, [
+                              Colors.blue.shade200,
+                              Colors.purple.shade200,
+                            ]),
+                            _buildSkillBadge(Icons.palette, [
+                              Colors.green.shade200,
+                              Colors.yellow.shade200,
+                            ]),
+                            _buildSkillBadge(Icons.business, [
+                              Colors.teal.shade200,
+                              Colors.blue.shade200,
+                            ]),
+                            _buildSkillBadge(Icons.movie, [
+                              Colors.red.shade200,
+                              Colors.purple.shade300,
+                            ]),
                           ],
                         ),
-                      ),
-                    ],
+
+                        const SizedBox(height: 16),
+
+                        // **Profile Option Buttons**
+                        _buildProfileOptionButton(
+                          Icons.map,
+                          "Roadmap",
+                          "Track your learning journey.",
+                          Colors.blue.shade200,
+                        ),
+                        _buildProfileOptionButton(
+                          Icons.description,
+                          "CV Builder",
+                          "Build a professional resume.",
+                          Colors.orange.shade200,
+                        ),
+                        _buildProfileOptionButton(
+                          Icons.shopping_cart,
+                          "Purchased Items",
+                          "View your purchased courses.",
+                          Colors.green.shade200,
+                        ),
+                        _buildProfileOptionButton(
+                          Icons.chat,
+                          "History Chats",
+                          "Access your past conversations.",
+                          Colors.purple.shade200,
+                        ),
+
+                        const SizedBox(height: 32), // Extra padding
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
+          ),
 
-            // Profile Picture with Badge Icon
-            Positioned(
-              top: screenHeight * 0.10,
-              left: screenWidth * 0.5 - 70,
-              child: Stack(
-                children: [
-                  GestureDetector(
-                    onTap: _pickImage,
-                    child: CircleAvatar(
-                      radius: 70,
-                      backgroundColor: Colors.white,
-                      backgroundImage:
-                          _image != null
-                              ? FileImage(_image!) as ImageProvider
-                              : const NetworkImage(
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCvTrUGSCZo920TjHoAvWnjoTD9LD3OL26Nw&s',
-                              ),
-                    ),
-                  ),
+          // **Bottom Navigation Bar**
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: BottomNavBar(currentIndex: 2, onTap: (index) {}),
+          ),
+        ],
+      ),
+    );
+  }
 
-                  // Badge Icon at Bottom Right
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => const SkillsPage(
-                                  initialTabIndex: 1,
-                                ), // Open Badges Tab
-                          ),
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
-                        ),
-                        child: const Icon(
-                          Icons.emoji_events, // Badge Icon
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Settings Icon
-            Positioned(
-              top: 50,
-              right: 20,
-              child: IconButton(
-                icon: const Icon(Icons.settings, size: 30, color: Colors.white),
-                onPressed: () {},
-              ),
+  /// **Pressable Skill Badge**
+  Widget _buildSkillBadge(IconData icon, List<Color> gradientColors) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const SkillsPage(initialTabIndex: 0),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            colors: gradientColors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 4,
+              spreadRadius: 1,
+              offset: const Offset(2, 2),
             ),
           ],
         ),
+        child: Icon(icon, color: Colors.white, size: 16),
       ),
     );
   }
 
-  // Profile Button
-  Widget _buildProfileButton(String title) {
-    return ElevatedButton(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF3A47D5),
-        foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        padding: const EdgeInsets.symmetric(vertical: 12),
-      ),
-      child: Text(
-        title,
-        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  // Skill Badge
-  Widget _buildSkillBadge(String skill) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: Border.all(color: Colors.blueAccent),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        skill,
-        style: const TextStyle(
-          color: Colors.blueAccent,
-          fontWeight: FontWeight.bold,
+  /// **Profile Option Button**
+  Widget _buildProfileOptionButton(
+    IconData icon,
+    String title,
+    String subtitle,
+    Color iconColor,
+  ) {
+    return InkWell(
+      onTap: () {},
+      splashColor: Colors.grey.shade300,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
+              spreadRadius: 1,
+              offset: const Offset(2, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: iconColor, size: 28),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(subtitle, style: const TextStyle(color: Colors.grey)),
+              ],
+            ),
+          ],
         ),
       ),
     );
