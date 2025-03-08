@@ -64,7 +64,7 @@ class CustomAppBar extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.notifications, color: Colors.white),
+                  icon: const Icon(Icons.notifications, color: Color.fromARGB(255, 13, 13, 13)),
                   onPressed: () {},
                 ),
                 const CircleAvatar(

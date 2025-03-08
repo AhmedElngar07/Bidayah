@@ -53,7 +53,7 @@ class SkillCubit extends Cubit<SkillState> {
     }
   }
 
-  /// Select a roadmap field and fetch sub-skills
+  /// ✅Select a roadmap field and fetch sub-skills
   void selectRoadMapField(String roadMapField) async {
     if (state is SkillSelected) {
       final currentState = state as SkillSelected;

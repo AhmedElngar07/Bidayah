@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class SkillSelectionPage extends StatelessWidget {
-  const SkillSelectionPage({super.key});
+  const SkillSelectionPage( {super.key});
 
   @override
   Widget build(BuildContext context) {

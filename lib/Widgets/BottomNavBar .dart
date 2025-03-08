@@ -4,16 +4,20 @@ import 'package:flutter/material.dart';
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
+  final GlobalKey<CurvedNavigationBarState> bottomNavigationKey;
 
   const BottomNavBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
+    required this.bottomNavigationKey, // ✅ Added GlobalKey
   });
 
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
+
+      height: 65,
       color: const Color(0xFFF0F3FA),
       backgroundColor: const Color(0xFFF0F3FA),
       buttonBackgroundColor: const Color(0xFF8AAEE0).withOpacity(0.7),
@@ -25,7 +29,9 @@ class BottomNavBar extends StatelessWidget {
         Icon(Icons.store, size: 30, color: Color.fromARGB(255, 86, 84, 84),),
         Icon(Icons.person, size: 30, color: Color.fromARGB(255, 86, 84, 84),),
       ],
-      onTap: onTap,
+      onTap: (index) {
+        onTap(index);
+      },
     );
   }
 }
