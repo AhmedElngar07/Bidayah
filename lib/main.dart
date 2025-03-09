@@ -7,8 +7,8 @@ import 'package:firebase_core/firebase_core.dart';
 //supabase imports
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// Import the InterviewScreen
-import 'Screens/InterviewScreen.dart'; // Adjust the import path as necessary
+//Import the interview_screen;
+import 'Screens/interview_screen.dart'; // Adjust the import path as necessary
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _navigateToInterviewScreen(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const InterviewScreen()),
+      MaterialPageRoute(builder: (context) => InterviewScreen()),
     );
   }
 
