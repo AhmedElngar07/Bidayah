@@ -26,10 +26,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     try {
       await auth.sendPasswordResetEmail(email: _emailController.text);
       EasyLoading.showSuccess(
-          "We have sent you a reset password link to your email.");
+        "We have sent you a reset password link to your email.",
+      );
       _emailController.clear();
       // Close screen after success
-      Navigator.pop(context); 
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       EasyLoading.showError("Failed to send reset email. ${e.message}");
     }
@@ -44,10 +45,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/Forget Password.png',
-              height: 250,
-            ),
+            Image.asset('assets/Forget Password.png', height: 250),
             const SizedBox(height: 20),
             const Text(
               "Oh! Forgot Your Password?",
@@ -61,10 +59,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             const Text(
               "Don't worry! Enter your email and we'll help you reset it.",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 30),
 
@@ -82,7 +77,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
                 hintText: 'Enter your Email',
                 hintStyle: const TextStyle(color: Colors.black26),
-                prefixIcon: const Icon(Icons.email, color: Colors.black45), // Added icon
+                prefixIcon: const Icon(
+                  Icons.email,
+                  color: Colors.black45,
+                ), // Added icon
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(color: Colors.black12),
@@ -125,11 +123,18 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.arrow_back, size: 20, color: Color.fromARGB(255, 18, 49, 97)),
+                  Icon(
+                    Icons.arrow_back,
+                    size: 20,
+                    color: Color.fromARGB(255, 18, 49, 97),
+                  ),
                   SizedBox(width: 5),
                   Text(
                     "Back",
-                    style: TextStyle(fontSize: 15, color: Color.fromARGB(255, 18, 49, 97)),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Color.fromARGB(255, 18, 49, 97),
+                    ),
                   ),
                 ],
               ),

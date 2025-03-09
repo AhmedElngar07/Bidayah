@@ -230,21 +230,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Colors.purple.shade200,
                         ),
 
-                        const SizedBox(height: 32), // Extra padding
+                        const SizedBox(height: 40), // Extra padding
                       ],
                     ),
                   ),
                 ),
               ),
             ],
-          ),
-
-          // **Bottom Navigation Bar**
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: BottomNavBar(currentIndex: 2, onTap: (index) {}),
           ),
         ],
       ),
@@ -303,14 +295,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 4,
-              spreadRadius: 1,
-              offset: const Offset(2, 2),
-            ),
-          ],
         ),
         child: Row(
           children: [
