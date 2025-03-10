@@ -48,11 +48,6 @@ dependencies:
   line_awesome_flutter: ^2.0.0
   font_awesome_flutter: ^10.7.0
   flutter_svg: ^2.0.9
-
-
-
-  
-
   rive: ^0.13.20
   flutter_easyloading: ^3.0.5
 

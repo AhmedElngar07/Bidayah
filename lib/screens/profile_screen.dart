@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:bidayah/Widgets/BottomNavBar%20.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -14,6 +15,16 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   File? _image;
+  int _currentIndex = 3; // Profile is the 4th item in the BottomNavBar
+  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey =
+      GlobalKey<CurvedNavigationBarState>();
+
+  final List<Widget> _screens = [
+    Placeholder(), // Replace with actual screen widgets
+    Placeholder(),
+    Placeholder(),
+    const ProfileScreen(),
+  ];
 
   Future<void> _pickImage() async {
     var status = await Permission.photos.request();
@@ -40,16 +51,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // **Background Image**
+          // **Background Color**
           Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/BackGround.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
+            color: const Color.fromARGB(255, 18, 49, 97),
           ),
 
           Column(
@@ -76,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Expanded(
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -130,8 +136,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       shape: BoxShape.circle,
                                       gradient: const LinearGradient(
                                         colors: [
-                                          Color(0xFFD4A5E6),
-                                          Color.fromARGB(255, 168, 202, 230),
+                                          Color.fromARGB(255, 252, 221, 48),
+                                          Color.fromARGB(255, 211, 133, 17),
                                         ],
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
@@ -173,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         const SizedBox(height: 8),
 
-                        // **Pressable Skills Badges**
+                        // **Skills Badges**
                         Wrap(
                           spacing: -10,
                           runSpacing: -10,
@@ -204,30 +210,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         const SizedBox(height: 16),
 
-                        // **Profile Option Buttons**
-                        _buildProfileOptionButton(
-                          Icons.map,
-                          "Roadmap",
-                          "Track your learning journey.",
-                          Colors.blue.shade200,
-                        ),
-                        _buildProfileOptionButton(
-                          Icons.description,
-                          "CV Builder",
-                          "Build a professional resume.",
-                          Colors.orange.shade200,
-                        ),
-                        _buildProfileOptionButton(
-                          Icons.shopping_cart,
-                          "Purchased Items",
-                          "View your purchased courses.",
-                          Colors.green.shade200,
-                        ),
-                        _buildProfileOptionButton(
-                          Icons.chat,
-                          "History Chats",
-                          "Access your past conversations.",
-                          Colors.purple.shade200,
+                        // **Profile Options**
+                        Column(
+                          children: [
+                            _buildProfileOptionButton(
+                              Icons.map,
+                              "Roadmap",
+                              "Track your learning journey.",
+                              Colors.blue.shade200,
+                            ),
+                            _buildProfileOptionButton(
+                              Icons.description,
+                              "CV Builder",
+                              "Build a professional resume.",
+                              Colors.orange.shade200,
+                            ),
+                            _buildProfileOptionButton(
+                              Icons.shopping_cart,
+                              "Purchased Items",
+                              "View your purchased courses.",
+                              Colors.green.shade200,
+                            ),
+                            _buildProfileOptionButton(
+                              Icons.chat,
+                              "History Chats",
+                              "Access your past conversations.",
+                              Colors.purple.shade200,
+                            ),
+                          ],
                         ),
 
                         const SizedBox(height: 40), // Extra padding
@@ -239,6 +249,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
         ],
+      ),
+
+      // ✅ Bottom Navigation Bar
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: _currentIndex,
+        bottomNavigationKey: _bottomNavigationKey,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          if (index < _screens.length) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => _screens[index]),
+            );
+          }
+        },
       ),
     );
   }
@@ -291,10 +318,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 6,
+              spreadRadius: 2,
+              offset: const Offset(2, 2),
+            ),
+          ],
         ),
         child: Row(
           children: [

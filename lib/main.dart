@@ -3,6 +3,7 @@ import 'package:bidayah/Screens/profile_screen.dart';
 import 'package:bidayah/Screens/Home_Page.dart';
 import 'package:bidayah/Screens/Skill_selection_page.dart';
 import 'package:bidayah/Screens/forget_password_screen.dart';
+import 'package:bidayah/Screens/skills_screen.dart';
 import 'package:bidayah/Screens/start.dart';
 import 'package:bidayah/Screens/welcome_screen.dart';
 import 'package:bidayah/Services/firebase_Services.dart';
@@ -34,8 +35,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Montserrat', useMaterial3: true),
-        // home:  HomePage(),
-        home: ProfileScreen(), // Set the initial screen
+
+        home: SkillsPage(), // Set the initial screen
         builder: EasyLoading.init(),
       ),
     );
