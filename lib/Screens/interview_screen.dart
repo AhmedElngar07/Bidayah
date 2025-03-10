@@ -6,10 +6,11 @@ import 'package:camera/camera.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:image_picker/image_picker.dart'; // Add this import
 
 // Make these values configurable from the UI to easily update the URL
-String _ngrokBaseUrl = '';
-String _analysisEndpoint = '/analyze_video/';
+String _ngrokBaseUrl = 'https://1396-41-35-188-247.ngrok-free.app';
+String _analysisEndpoint = '/transcribe';
 bool _debugMode = true; // Toggle for showing debug logs
 
 void main() async {
@@ -150,16 +151,41 @@ class _InterviewScreenState extends State<InterviewScreen> {
     try {
       if (_debugMode)
         print("Calling API with URL: $_ngrokBaseUrl$_analysisEndpoint");
+
+      // Add a message to show we're calling the API
+      _addChatMessage("System", "Calling API to analyze video...", null);
+
       final result = await _callCombinedApiService(videoFile);
       if (_debugMode) print("API result: $result");
+
+      // Display full API response for debugging
+      if (_debugMode) {
+        _addChatMessage(
+          "System",
+          "Debug - Raw API response: ${result.toString()}",
+          null,
+        );
+      }
 
       setState(() {
         _transcript = result['transcript'] ?? '';
         _emotion = result['emotion'] ?? '';
       });
+
+      // Add more detailed feedback
       _addChatMessage("AI", "Analysis complete:", null);
-      _addChatMessage("AI", "Emotion: $_emotion", null);
-      _addChatMessage("AI", "Transcript: $_transcript", null);
+
+      if (_emotion.isEmpty || _emotion == 'No emotion data') {
+        _addChatMessage("AI", "Emotion: Could not detect emotion", null);
+      } else {
+        _addChatMessage("AI", "Emotion: $_emotion", null);
+      }
+
+      if (_transcript.isEmpty || _transcript == 'No transcript data') {
+        _addChatMessage("AI", "Transcript: Could not transcribe audio", null);
+      } else {
+        _addChatMessage("AI", "Transcript: $_transcript", null);
+      }
     } catch (e) {
       _handleError('Processing Error: $e');
     } finally {
@@ -182,6 +208,8 @@ class _InterviewScreenState extends State<InterviewScreen> {
     return true;
   }
 
+  // In the _callCombinedApiService method, change the field name from 'video' to 'file'
+  // This is the updated function for the Flutter app to correctly parse the FastAPI response
   Future<Map<String, String>> _callCombinedApiService(File file) async {
     try {
       final uri = Uri.parse('$_ngrokBaseUrl$_analysisEndpoint');
@@ -192,26 +220,11 @@ class _InterviewScreenState extends State<InterviewScreen> {
         print("File size: ${await file.length()} bytes");
       }
 
-      // Try direct HTTP request first for better error messages
-      try {
-        if (_debugMode) print("Testing connection to $uri");
-        final testResponse = await http
-            .get(
-              Uri.parse(_ngrokBaseUrl),
-              headers: {'ngrok-skip-browser-warning': 'true'},
-            )
-            .timeout(const Duration(seconds: 10));
-        if (_debugMode)
-          print("Connection test response: ${testResponse.statusCode}");
-      } catch (e) {
-        if (_debugMode) print("Connection test failed: $e");
-      }
-
       // Create multipart request
       final request = http.MultipartRequest('POST', uri);
 
-      // Important: Use 'video' as the field name to match FastAPI parameter
-      request.files.add(await http.MultipartFile.fromPath('video', file.path));
+      // Use 'file' as the field name to match FastAPI parameter
+      request.files.add(await http.MultipartFile.fromPath('file', file.path));
 
       request.headers.addAll({
         'Accept': 'application/json',
@@ -220,22 +233,74 @@ class _InterviewScreenState extends State<InterviewScreen> {
 
       if (_debugMode) print("Sending multipart request...");
       final streamedResponse = await request.send().timeout(
-        const Duration(seconds: 30),
+        const Duration(
+          seconds: 120,
+        ), // Increased timeout for processing large videos
       );
 
       if (_debugMode) print("Response status: ${streamedResponse.statusCode}");
       final body = await streamedResponse.stream.bytesToString();
-      if (_debugMode) print("Response body: $body");
+
+      // Detailed response logging
+      if (_debugMode) {
+        print("Response headers: ${streamedResponse.headers}");
+        print("Response body (raw): $body");
+      }
 
       if (streamedResponse.statusCode != 200) {
         throw Exception('Server error: ${streamedResponse.statusCode}, $body');
       }
 
-      final decodedBody = jsonDecode(body);
-      return {
-        'transcript': decodedBody['transcript']?.toString() ?? '',
-        'emotion': decodedBody['emotion']?.toString() ?? '',
-      };
+      // Handle empty response
+      if (body.isEmpty) {
+        if (_debugMode) print("Warning: Empty response body");
+        return {
+          'transcript': 'Empty response from server',
+          'emotion': 'Empty response from server',
+        };
+      }
+
+      // Parse the JSON response
+      Map<String, dynamic> decodedBody;
+      try {
+        decodedBody = jsonDecode(body);
+      } catch (e) {
+        if (_debugMode) print("JSON decode error: $e");
+        return {
+          'transcript': 'Error parsing server response: $e',
+          'emotion': 'Error parsing server response: $e',
+        };
+      }
+
+      // Extract data with more flexible field detection
+      String transcript = 'No transcript data';
+      String emotion = 'No emotion data';
+
+      // Try different field names for transcript
+      if (decodedBody.containsKey('transcript')) {
+        transcript =
+            decodedBody['transcript']?.toString() ?? 'No transcript data';
+      } else if (decodedBody.containsKey('text')) {
+        transcript = decodedBody['text']?.toString() ?? 'No transcript data';
+      }
+
+      // Try different field names for emotion
+      if (decodedBody.containsKey('emotion')) {
+        emotion = decodedBody['emotion']?.toString() ?? 'No emotion data';
+      } else if (decodedBody.containsKey('face_reactions') &&
+          decodedBody['face_reactions'] is Map &&
+          decodedBody['face_reactions'].containsKey('dominant_emotion')) {
+        emotion =
+            decodedBody['face_reactions']['dominant_emotion']?.toString() ??
+            'No emotion data';
+      }
+
+      if (_debugMode) {
+        print("Extracted transcript: $transcript");
+        print("Extracted emotion: $emotion");
+      }
+
+      return {'transcript': transcript, 'emotion': emotion};
     } catch (e) {
       if (_debugMode) {
         print("API call failed with error: $e");
@@ -299,6 +364,49 @@ class _InterviewScreenState extends State<InterviewScreen> {
     } catch (e) {
       _addChatMessage("System", "Connection test failed: $e", null);
       if (_debugMode) print("Connection test error: $e");
+    }
+  }
+
+  // In the _InterviewScreenState class, add an import method to pick and upload videos
+
+  Future<void> _pickVideoFromGallery() async {
+    try {
+      setState(() {
+        _isProcessing = true;
+        _error = '';
+      });
+
+      // Use image_picker package to select a video from gallery
+      // You'll need to add this to your pubspec.yaml:
+      // image_picker: ^0.8.7+5
+
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedFile = await picker.pickVideo(
+        source: ImageSource.gallery,
+        maxDuration: const Duration(minutes: 2), // Optional duration limit
+      );
+
+      if (pickedFile == null) {
+        if (_debugMode) print("No video selected");
+        setState(() => _isProcessing = false);
+        return;
+      }
+
+      if (_debugMode) {
+        print("Video picked: ${pickedFile.path}");
+        print("File exists: ${await File(pickedFile.path).exists()}");
+        print("File size: ${await File(pickedFile.path).length()} bytes");
+      }
+
+      _videoFile = pickedFile;
+      _addChatMessage("User", "Video uploaded", pickedFile.path);
+
+      // Process the selected video
+      await _processVideo(File(pickedFile.path));
+    } catch (e) {
+      _handleError('Video Picking Error: $e');
+    } finally {
+      setState(() => _isProcessing = false);
     }
   }
 
@@ -557,6 +665,18 @@ class _InterviewScreenState extends State<InterviewScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // Upload Video button
+          FloatingActionButton(
+            heroTag: "uploadButton",
+            onPressed:
+                _isProcessing || _isRecording ? null : _pickVideoFromGallery,
+            backgroundColor:
+                _isProcessing ? Colors.grey.withOpacity(0.5) : Colors.green,
+            child: const Icon(Icons.upload_file, color: Colors.white),
+            tooltip: 'Upload video',
+          ),
+          const SizedBox(width: 24),
+          // Record button (existing functionality)
           FloatingActionButton(
             heroTag: "recordButton",
             onPressed: _isProcessing || _isRecording ? null : _toggleRecording,
@@ -566,6 +686,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
               _isRecording ? Icons.stop : Icons.videocam,
               color: Colors.white,
             ),
+            tooltip: 'Record video',
           ),
         ],
       ),
