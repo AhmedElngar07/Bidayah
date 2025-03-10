@@ -1,4 +1,6 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 //firebase imports
 import 'firebase_options.dart';
@@ -57,11 +59,25 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _navigateToInterviewScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => InterviewScreen()),
-    );
+  void _navigateToInterviewScreen(BuildContext context) async {
+    var status = await Permission.camera.request();
+    var micStatus = await Permission.microphone.request();
+
+    if (status.isGranted && micStatus.isGranted) {
+      try {
+        final cameras = await availableCameras();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => InterviewScreen(cameras: cameras),
+          ),
+        );
+      } catch (e) {
+        print('Error accessing cameras: $e');
+      }
+    } else {
+      print("Camera or Microphone permission denied.");
+    }
   }
 
   @override
