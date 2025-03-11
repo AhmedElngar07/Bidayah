@@ -1,5 +1,7 @@
 import 'package:bidayah/Cubits/Skill_cubit.dart';
 import 'package:bidayah/Screens/Home_Page.dart';
+import 'package:bidayah/Screens/Instruction%20_Screen%20.dart';
+import 'package:bidayah/OnBoardingInstruction/OnBoardingInstruction_Screen.dart';
 import 'package:bidayah/Screens/Skill_selection_page.dart';
 import 'package:bidayah/Screens/forget_password_screen.dart';
 import 'package:bidayah/Screens/start.dart';
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true
           ),
         // home:  HomePage(),
-        home: ForgetPasswordScreen(), // Set the initial screen
+        home: OnBoardingInstructionScreen(), // Set the initial screen
         builder: EasyLoading.init(),
       ),
     );

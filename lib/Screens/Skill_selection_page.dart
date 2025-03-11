@@ -60,7 +60,7 @@ class SkillSelectionPage extends StatelessWidget {
                 return Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  color: Colors.white, // Optional: Add background color if needed
+                  color: Colors.white, 
                   child: ElevatedButton(
                     onPressed: isEnabled
                         ? () {
