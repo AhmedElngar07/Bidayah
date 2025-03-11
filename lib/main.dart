@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Montserrat', useMaterial3: true),
 
-        home: SkillsPage(), // Set the initial screen
+        home: ProfileScreen(), // Set the initial screen
         builder: EasyLoading.init(),
       ),
     );
