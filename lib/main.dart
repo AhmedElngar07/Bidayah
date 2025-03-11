@@ -1,27 +1,31 @@
+import 'package:bidayah/blocs/auth/auth_bloc.dart';
 import 'package:bidayah/screens/welcome_screen.dart';
+import 'package:bidayah/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'firebase_options.dart'; // Ensure this file exists!
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'firebase_options.dart';
 import 'package:bidayah/widgets/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, // Ensure this is set
+    options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const AppStarter());
 }
 
-
 class AppStarter extends StatelessWidget {
+  const AppStarter({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Firebase.initializeApp(), // Initialize Firebase
+      future: Firebase.initializeApp(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const MaterialApp(
-            home: Scaffold(body: Center(child: CircularProgressIndicator())), // Show loading spinner
+            home: Scaffold(body: Center(child: CircularProgressIndicator())),
           );
         } else if (snapshot.hasError) {
           return MaterialApp(
@@ -30,7 +34,7 @@ class AppStarter extends StatelessWidget {
             ),
           );
         }
-        return const MyApp(); // Start app after Firebase is initialized
+        return const MyApp();
       },
     );
   }
@@ -41,18 +45,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Bidayah',
-      theme: ThemeData(
-        fontFamily: 'Montserrat',
-        colorScheme: lightColorScheme,
-        useMaterial3: true,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(
+            authService: AuthService(),
+          ),
+        ),
+        // Add other BLoCs here as needed
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Bidayah',
+        theme: ThemeData(
+          fontFamily: 'Montserrat',
+          colorScheme: lightColorScheme,
+          useMaterial3: true,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const WelcomeScreen(),
+        },
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const WelcomeScreen(),
-      },
     );
   }
 }
