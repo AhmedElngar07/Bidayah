@@ -1,11 +1,5 @@
 import 'package:bidayah/Cubits/Skill_cubit.dart';
-import 'package:bidayah/Screens/Home_Page.dart';
-import 'package:bidayah/Screens/Instruction%20_Screen%20.dart';
 import 'package:bidayah/OnBoardingInstruction/OnBoardingInstruction_Screen.dart';
-import 'package:bidayah/Screens/Skill_selection_page.dart';
-import 'package:bidayah/Screens/forget_password_screen.dart';
-import 'package:bidayah/Screens/start.dart';
-import 'package:bidayah/Screens/welcome_screen.dart';
 import 'package:bidayah/Services/firebase_Services.dart';
 import 'package:bidayah/Services/firebase_options.dart';
 import 'package:flutter/material.dart';
