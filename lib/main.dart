@@ -1,9 +1,5 @@
 import 'package:bidayah/blocs/auth/auth_bloc.dart';
 import 'package:bidayah/Cubits/Skill_cubit.dart';
-import 'package:bidayah/Screens/Home_Page.dart';
-import 'package:bidayah/Screens/Skill_selection_page.dart';
-import 'package:bidayah/Screens/forget_password_screen.dart';
-import 'package:bidayah/Screens/start.dart';
 import 'package:bidayah/Screens/welcome_screen.dart';
 import 'package:bidayah/services/auth_service.dart';
 import 'package:bidayah/Services/firebase_Services.dart';
@@ -11,9 +7,6 @@ import 'package:bidayah/Services/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bidayah/widgets/theme.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 
