@@ -1,3 +1,4 @@
+import 'package:bidayah/Screens/Skill_selection_page.dart';
 import 'package:flutter/material.dart';
 
 class StartScreen extends StatelessWidget {
@@ -89,7 +90,7 @@ class StartScreen extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const Placeholder(),
+                builder: (context) => const SkillSelectionPage(),
               ),
             );
           },
@@ -110,8 +111,8 @@ class StartScreen extends StatelessWidget {
   }
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class StartWidget extends StatelessWidget {
+  const StartWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

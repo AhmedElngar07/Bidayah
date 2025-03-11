@@ -1,11 +1,22 @@
 import 'package:bidayah/blocs/auth/auth_bloc.dart';
-import 'package:bidayah/screens/welcome_screen.dart';
+import 'package:bidayah/Cubits/Skill_cubit.dart';
+import 'package:bidayah/Screens/Home_Page.dart';
+import 'package:bidayah/Screens/Skill_selection_page.dart';
+import 'package:bidayah/Screens/forget_password_screen.dart';
+import 'package:bidayah/Screens/start.dart';
+import 'package:bidayah/Screens/welcome_screen.dart';
 import 'package:bidayah/services/auth_service.dart';
+import 'package:bidayah/Services/firebase_Services.dart';
+import 'package:bidayah/Services/firebase_options.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'firebase_options.dart';
 import 'package:bidayah/widgets/theme.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,11 +52,17 @@ class AppStarter extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
+      providers: [
+        BlocProvider<SkillCubit>(
+          create: (context) => SkillCubit(FirebaseService()),
+        ),
+      ],
+      child: MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc(
@@ -55,17 +72,15 @@ class MyApp extends StatelessWidget {
         // Add other BLoCs here as needed
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Bidayah',
-        theme: ThemeData(
-          fontFamily: 'Montserrat',
-          colorScheme: lightColorScheme,
-          useMaterial3: true,
+          debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+            fontFamily: 'Montserrat', 
+              useMaterial3: true
+            ),
+          // home:  HomePage(),
+          home: WelcomeScreen(), // Set the initial screen
+          builder: EasyLoading.init(),
         ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const WelcomeScreen(),
-        },
       ),
     );
   }
