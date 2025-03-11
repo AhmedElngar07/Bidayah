@@ -835,165 +835,155 @@ class _SkillsPageState extends State<SkillsPage> with TickerProviderStateMixin {
                     ),
                   );
                 },
-                child: GestureDetector(
-                  onTap: () {
-                    if (badge["earned"]) {
-                      _showBadgeDetails(badge);
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(
-                        16,
-                      ), // Made smaller (was 20)
-                      boxShadow: [
-                        BoxShadow(
+                // Removed GestureDetector to make badges non-pressable
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(
+                      16,
+                    ), // Made smaller (was 20)
+                    boxShadow: [
+                      BoxShadow(
+                        color:
+                            badge["earned"]
+                                ? badge["color"].withOpacity(0.3)
+                                : Colors.grey.withOpacity(0.2),
+                        blurRadius: 8, // Made smaller (was 10)
+                        offset: const Offset(0, 3), // Made smaller (was 0, 4)
+                      ),
+                    ],
+                    border:
+                        badge["earned"]
+                            ? Border.all(color: badge["color"], width: 2)
+                            : Border.all(color: Colors.grey.shade300, width: 2),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(
+                              14,
+                            ), // Made smaller (was 16)
+                            decoration: BoxDecoration(
+                              color:
+                                  badge["earned"]
+                                      ? badge["color"].withOpacity(0.1)
+                                      : Colors.grey.shade100,
+                              shape: BoxShape.circle,
+                              boxShadow:
+                                  badge["earned"]
+                                      ? [
+                                        BoxShadow(
+                                          color: badge["color"].withOpacity(
+                                            0.2,
+                                          ),
+                                          blurRadius: 6, // Made smaller (was 8)
+                                          spreadRadius: 1,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ]
+                                      : null,
+                            ),
+                            child: SvgPicture.asset(
+                              badge["icon"],
+                              height: 36, // Made smaller (was 40)
+                              width: 36, // Made smaller (was 40)
+                              colorFilter: ColorFilter.mode(
+                                badge["earned"]
+                                    ? badge["color"]
+                                    : Colors.grey.shade400,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ),
+                          if (badge["earned"])
+                            Positioned(
+                              right: 0,
+                              bottom: 0,
+                              child: Container(
+                                padding: const EdgeInsets.all(
+                                  3,
+                                ), // Made smaller (was 4)
+                                decoration: BoxDecoration(
+                                  color: badge["color"],
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 2,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: badge["color"].withOpacity(0.3),
+                                      blurRadius: 3, // Made smaller (was 4)
+                                      spreadRadius: 0,
+                                      offset: const Offset(0, 1),
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: 12, // Made smaller (was 14)
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 8), // Made smaller (was 10)
+                      Text(
+                        badge["name"],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
                           color:
                               badge["earned"]
-                                  ? badge["color"].withOpacity(0.3)
-                                  : Colors.grey.withOpacity(0.2),
-                          blurRadius: 8, // Made smaller (was 10)
-                          offset: const Offset(0, 3), // Made smaller (was 0, 4)
+                                  ? Colors.black
+                                  : Colors.grey.shade500,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13, // Made smaller (was 14)
                         ),
-                      ],
-                      border:
-                          badge["earned"]
-                              ? Border.all(color: badge["color"], width: 2)
-                              : Border.all(
-                                color: Colors.grey.shade300,
-                                width: 2,
-                              ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(
-                                14,
-                              ), // Made smaller (was 16)
-                              decoration: BoxDecoration(
-                                color:
-                                    badge["earned"]
-                                        ? badge["color"].withOpacity(0.1)
-                                        : Colors.grey.shade100,
-                                shape: BoxShape.circle,
-                                boxShadow:
-                                    badge["earned"]
-                                        ? [
-                                          BoxShadow(
-                                            color: badge["color"].withOpacity(
-                                              0.2,
-                                            ),
-                                            blurRadius:
-                                                6, // Made smaller (was 8)
-                                            spreadRadius: 1,
-                                            offset: const Offset(0, 2),
-                                          ),
-                                        ]
-                                        : null,
-                              ),
-                              child: SvgPicture.asset(
-                                badge["icon"],
-                                height: 36, // Made smaller (was 40)
-                                width: 36, // Made smaller (was 40)
-                                colorFilter: ColorFilter.mode(
-                                  badge["earned"]
-                                      ? badge["color"]
-                                      : Colors.grey.shade400,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                            ),
-                            if (badge["earned"])
-                              Positioned(
-                                right: 0,
-                                bottom: 0,
-                                child: Container(
-                                  padding: const EdgeInsets.all(
-                                    3,
-                                  ), // Made smaller (was 4)
-                                  decoration: BoxDecoration(
-                                    color: badge["color"],
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: Colors.white,
-                                      width: 2,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: badge["color"].withOpacity(0.3),
-                                        blurRadius: 3, // Made smaller (was 4)
-                                        spreadRadius: 0,
-                                        offset: const Offset(0, 1),
-                                      ),
-                                    ],
-                                  ),
-                                  child: const Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 12, // Made smaller (was 14)
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                        const SizedBox(height: 8), // Made smaller (was 10)
-                        Text(
-                          badge["name"],
+                      ),
+                      const SizedBox(height: 3), // Made smaller (was 4)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          badge["description"],
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color:
-                                badge["earned"]
-                                    ? Colors.black
-                                    : Colors.grey.shade500,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13, // Made smaller (was 14)
+                            color: Colors.grey.shade600,
+                            fontSize: 9, // Made smaller (was 10)
                           ),
                         ),
-                        const SizedBox(height: 3), // Made smaller (was 4)
+                      ),
+                      if (badge["earned"])
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Text(
-                            badge["description"],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.grey.shade600,
-                              fontSize: 9, // Made smaller (was 10)
+                          padding: const EdgeInsets.only(
+                            top: 6,
+                          ), // Made smaller (was 8)
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6, // Made smaller (was 8)
+                              vertical: 2, // Made smaller (was 3)
+                            ),
+                            decoration: BoxDecoration(
+                              color: badge["color"].withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(
+                                8,
+                              ), // Made smaller (was 10)
+                            ),
+                            child: Text(
+                              "Earned: ${badge["date"]}",
+                              style: TextStyle(
+                                color: badge["color"],
+                                fontSize: 9, // Made smaller (was 10)
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
-                        if (badge["earned"])
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 6,
-                            ), // Made smaller (was 8)
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6, // Made smaller (was 8)
-                                vertical: 2, // Made smaller (was 3)
-                              ),
-                              decoration: BoxDecoration(
-                                color: badge["color"].withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(
-                                  8,
-                                ), // Made smaller (was 10)
-                              ),
-                              child: Text(
-                                "Earned: ${badge["date"]}",
-                                style: TextStyle(
-                                  color: badge["color"],
-                                  fontSize: 9, // Made smaller (was 10)
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
+                    ],
                   ),
                 ),
               );
@@ -1001,122 +991,6 @@ class _SkillsPageState extends State<SkillsPage> with TickerProviderStateMixin {
           ),
         ),
       ],
-    );
-  }
-
-  void _showBadgeDetails(Map<String, dynamic> badge) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Badge icon
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: badge["color"].withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: SvgPicture.asset(
-                      badge["icon"],
-                      height: 60,
-                      width: 60,
-                      colorFilter: ColorFilter.mode(
-                        badge["color"],
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Badge title
-                  Text(
-                    badge["name"],
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 10),
-
-                  // Badge description
-                  Text(
-                    badge["description"],
-                    style: TextStyle(color: Colors.grey.shade700, fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 15),
-
-                  // Earned date
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: badge["color"].withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.calendar_today,
-                          color: badge["color"],
-                          size: 16,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          "Earned: ${badge["date"]}",
-                          style: TextStyle(
-                            color: badge["color"],
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 25),
-
-                  // Close button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: badge["color"],
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      child: const Text(
-                        "Close",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
     );
   }
 }
