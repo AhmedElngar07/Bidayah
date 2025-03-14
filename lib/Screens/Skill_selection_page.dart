@@ -1,6 +1,7 @@
 import 'package:bidayah/Cubits/Skill_cubit.dart';
 import 'package:bidayah/Cubits/skill_state.dart';
 import 'package:bidayah/Screens/Home_Page.dart';
+import 'package:bidayah/Styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,9 +27,9 @@ class SkillSelectionPage extends StatelessWidget {
                     const Text(
                       'Customize Your Roadmap',
                       style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
+                        color: AppColors.PrimaryColor,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -60,7 +61,7 @@ class SkillSelectionPage extends StatelessWidget {
                 return Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  color: Colors.white, 
+                  color: AppColors.backgroundColor, 
                   child: ElevatedButton(
                     onPressed: isEnabled
                         ? () {
@@ -85,7 +86,7 @@ class SkillSelectionPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Customize your RoadMap',
+                          'Customize Your Roadmap',
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                         SizedBox(width: 8),
@@ -155,7 +156,7 @@ class SkillDetailsWidget extends StatelessWidget {
           return Column(
             children: [
               CustomContainer(
-                title: "RoadMap Fields for ${state.selectedSkill}",
+                title: "Roadmap Fields for ${state.selectedSkill}",
                 child: Wrap(
                   spacing: 12,
                   runSpacing: 8,
@@ -210,7 +211,8 @@ class CustomContainer extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF8AAEE0).withOpacity(0.7),
+        color:  Color.fromARGB(224, 239, 240, 245),
+
         borderRadius: BorderRadius.circular(15),
         border: Border.all(color: Colors.white.withOpacity(0.2), width: 1),
       ),
@@ -220,7 +222,7 @@ class CustomContainer extends StatelessWidget {
           Text(
             title,
             style:  TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.7),
+              color: AppColors.PrimaryColor,
               fontSize: 22,
               fontWeight: FontWeight.bold,
             ),
@@ -252,14 +254,14 @@ class SkillButton extends StatelessWidget {
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
         backgroundColor: isSelected
-            ? const Color.fromARGB(49, 9, 68, 247)
+            ?   Color.fromRGBO(149, 175, 225, 0.765) 
             : const Color(0xFFF0F3FA).withOpacity(0.2),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: Text(
         text,
-        style: const TextStyle(color: Color(0xFFF0F3FA), fontSize: 16),
+        style: const TextStyle(color: Color.fromARGB(255, 52, 55, 57), fontSize: 16),
       ),
     );
   }

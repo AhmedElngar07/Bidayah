@@ -1,5 +1,6 @@
 import 'package:bidayah/Screens/RoadMap_Screen.dart';
 import 'package:bidayah/Screens/Skill_selection_page.dart';
+import 'package:bidayah/Styles/app_colors.dart';
 import 'package:bidayah/Widgets/BottomNavBar%20.dart';
 import 'package:bidayah/Widgets/BuildIntoCard.dart';
 import 'package:bidayah/Widgets/Step_Progress.dart';
@@ -33,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
       backgroundColor: Colors.transparent,
       body: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color.fromARGB(255, 252, 252, 251),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(25),
                   topRight: Radius.circular(25),
@@ -112,7 +113,7 @@ Widget _buildRoadmapCard(BuildContext context) {
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     margin: const EdgeInsets.symmetric(horizontal: 8),
     decoration: BoxDecoration(
-      color: const Color.fromRGBO(18, 49, 97, 1),
+      color: AppColors.PrimaryColor,
       borderRadius: BorderRadius.circular(12),
       boxShadow: [
         BoxShadow(

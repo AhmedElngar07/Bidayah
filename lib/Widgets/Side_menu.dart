@@ -30,8 +30,8 @@ class _SideMenuState extends State<SideMenu> {
             child: Text(
               "Bidayah",
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
+                fontSize: 35,
+                fontWeight: FontWeight.w800,
                 color: Colors.white.withOpacity(0.95),
                 letterSpacing: 0.5,
               ),
