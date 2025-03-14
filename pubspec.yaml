@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   icons_plus: ^4.0.0
   firebase_core: ^3.12.0
+  image_picker: ^1.0.7
+  permission_handler: ^11.0.1
   firebase_auth: ^5.5.1
   fluttertoast: ^8.2.12
   cloud_firestore: ^5.6.5
@@ -43,11 +45,13 @@ dependencies:
   flutter_bloc: ^9.0.0
   percent_indicator: ^4.2.4
   curved_navigation_bar: ^1.0.6
+  eva_icons_flutter: ^3.1.0
+  line_awesome_flutter: ^2.0.0
+  font_awesome_flutter: ^10.7.0
+  flutter_svg: ^2.0.9
   rive: ^0.13.20
   flutter_easyloading: ^3.0.5
-  
-
-  
+  lottie: ^2.3.2     
 
 
 
@@ -78,6 +82,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/pen-writer-svgrepo-com.svg
+    - assets/photoshop-svgrepo-com.svg
+    - assets/type-svgrepo-com.svg
+    - assets/panel-poster-svgrepo-com.svg
+    - assets/m.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

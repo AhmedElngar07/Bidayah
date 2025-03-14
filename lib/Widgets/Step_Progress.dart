@@ -7,11 +7,11 @@ class StepProgressIndicator extends StatelessWidget {
   final String stepDescription;
 
   const StepProgressIndicator({
-    Key? key,
+    super.key,
     required this.currentStep,
     required this.totalSteps,
     required this.stepDescription,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +36,11 @@ class StepProgressIndicator extends StatelessWidget {
               ),
               Text(
                 stepDescription,
-                style: const TextStyle(
-                  fontSize: 11,
-                  color: Color(0xFF666666),
-                ),
+                style: const TextStyle(fontSize: 11, color: Color(0xFF666666)),
               ),
             ],
           ),
-          
+
           // Circular indicator now on the right
           CircularPercentIndicator(
             radius: 40.0,

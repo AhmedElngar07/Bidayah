@@ -1,10 +1,7 @@
-
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget {
-  
-
-
+  const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +35,10 @@ class CustomAppBar extends StatelessWidget {
                         ),
                         const Text(
                           "Find Your Career Path",
-                          style: TextStyle(fontSize: 14, color: Color.fromARGB(179, 36, 35, 35)),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color.fromARGB(179, 36, 35, 35),
+                          ),
                         ),
                       ],
                     ),
@@ -48,15 +48,16 @@ class CustomAppBar extends StatelessWidget {
             ),
           ),
 
-          
-
           Positioned(
             top: 10,
             right: 10,
             child: Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.notifications, color: Color.fromARGB(255, 13, 13, 13)),
+                  icon: const Icon(
+                    Icons.notifications,
+                    color: Color.fromARGB(255, 13, 13, 13),
+                  ),
                   onPressed: () {},
                 ),
                 const CircleAvatar(

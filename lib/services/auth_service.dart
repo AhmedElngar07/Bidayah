@@ -1,9 +1,7 @@
-
 import 'package:bidayah/screens/start.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -17,10 +15,8 @@ class AuthService {
       // Trim email to remove extra spaces
       email = email.trim();
 
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
       // Update the user's display name
       await userCredential.user?.updateDisplayName(fullName);
@@ -82,37 +78,32 @@ class AuthService {
     );
   }
 
-  
-
- Future<void> login({
+  Future<void> login({
     required String email,
     required String password,
-    required BuildContext context
+    required BuildContext context,
   }) async {
-    
     try {
-
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
-        password: password
+        password: password,
       );
 
       await Future.delayed(const Duration(seconds: 1));
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => const StartScreen()
-        )
+          builder: (BuildContext context) => const StartScreen(),
+        ),
       );
-      
-    } on FirebaseAuthException catch(e) {
+    } on FirebaseAuthException catch (e) {
       String message = '';
       if (e.code == 'invalid-email') {
         message = 'No user found for that email.';
       } else if (e.code == 'invalid-credential') {
         message = 'Wrong password provided for that user.';
       }
-       Fluttertoast.showToast(
+      Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.SNACKBAR,
@@ -121,6 +112,5 @@ class AuthService {
         fontSize: 14.0,
       );
     }
-
   }
 }

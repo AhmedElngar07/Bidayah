@@ -32,10 +32,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     try {
       await auth.sendPasswordResetEmail(email: _emailController.text);
       EasyLoading.showSuccess(
-          "We have sent you a reset password link to your email.");
+        "We have sent you a reset password link to your email.",
+      );
       _emailController.clear();
       // Close screen after success
-      Navigator.pop(context); 
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       EasyLoading.showError("Failed to send reset email. ${e.message}");
     }
