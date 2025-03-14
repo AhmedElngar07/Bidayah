@@ -2,13 +2,12 @@
 import 'package:bidayah/blocs/auth/auth_bloc.dart';
 import 'package:bidayah/blocs/auth/auth_event.dart';
 import 'package:bidayah/blocs/auth/auth_state.dart';
-import 'package:bidayah/screens/welcome_screen.dart'; 
+import 'package:bidayah/screens/welcome_screen.dart';
 import 'package:bidayah/screens/signup_screen.dart';
 import 'package:bidayah/widgets/button.dart';
 import 'package:bidayah/widgets/custom_scaffold.dart';
 import 'package:bidayah/widgets/passwordtextfield.dart';
 import 'package:bidayah/widgets/textfield.dart';
-import 'package:bidayah/widgets/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,9 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         } else if (state is AuthFailure) {
           // Show error message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       child: CustomScaffold(
@@ -71,7 +70,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                           fontSize: 30.0,
                           fontWeight: FontWeight.w900,
-                          color: lightColorScheme.primary,
                         ),
                       ),
                       const SizedBox(height: 40.0),
@@ -126,11 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 25.0),
                       Row(
                         children: [
-                          Checkbox(
-                            value: true,
-                            onChanged: (bool? value) {},
-                            activeColor: lightColorScheme.primary,
-                          ),
+                          Checkbox(value: true, onChanged: (bool? value) {}),
                           const Text(
                             'Remember me',
                             style: TextStyle(color: Colors.black45),
@@ -142,45 +136,48 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             child: Text(
                               'Forget password?',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: lightColorScheme.primary,
-                              ),
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 25.0),
                       // Login button
-                  BlocBuilder<AuthBloc, AuthState>(
-  builder: (context, state) {
-    return CustomButton(
-      text: state is AuthLoading ? 'Logging in...' : 'Log in',
-      onPressed: () {
-        if (state is! AuthLoading) {
-          // Validate input
-          if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Please fill all fields')),
-            );
-            return;
-          }
-          
-          // Dispatch login event
-          context.read<AuthBloc>().add(
-                AuthLoginRequested(
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                  context: context,
-                ),
-              );
-        }
-      },
-      backgroundColor: lightColorScheme.primary,
-      textColor: Colors.white,
-    );
-  },
-),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          return CustomButton(
+                            text:
+                                state is AuthLoading
+                                    ? 'Logging in...'
+                                    : 'Log in',
+                            onPressed: () {
+                              if (state is! AuthLoading) {
+                                // Validate input
+                                if (_emailController.text.isEmpty ||
+                                    _passwordController.text.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Please fill all fields'),
+                                    ),
+                                  );
+                                  return;
+                                }
+
+                                // Dispatch login event
+                                context.read<AuthBloc>().add(
+                                  AuthLoginRequested(
+                                    email: _emailController.text,
+                                    password: _passwordController.text,
+                                    context: context,
+                                  ),
+                                );
+                              }
+                            },
+
+                            textColor: Colors.white,
+                          );
+                        },
+                      ),
                       const SizedBox(height: 30.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -233,10 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             child: Text(
                               'Sign up',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: lightColorScheme.primary,
-                              ),
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
                         ],

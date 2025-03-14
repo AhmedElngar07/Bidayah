@@ -8,7 +8,6 @@ import 'package:bidayah/widgets/button.dart';
 import 'package:bidayah/widgets/custom_scaffold.dart';
 import 'package:bidayah/widgets/passwordtextfield.dart';
 import 'package:bidayah/widgets/textfield.dart';
-import 'package:bidayah/widgets/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,9 +45,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           );
         } else if (state is AuthFailure) {
           // Show error message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       child: CustomScaffold(
@@ -77,7 +76,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           style: TextStyle(
                             fontSize: 30.0,
                             fontWeight: FontWeight.w900,
-                            color: lightColorScheme.primary,
                           ),
                         ),
                         const SizedBox(height: 40.0),
@@ -102,11 +100,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.black12),
+                              borderSide: const BorderSide(
+                                color: Colors.black12,
+                              ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.black12),
+                              borderSide: const BorderSide(
+                                color: Colors.black12,
+                              ),
                             ),
                           ),
                         ),
@@ -133,11 +135,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.black12),
+                              borderSide: const BorderSide(
+                                color: Colors.black12,
+                              ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.black12),
+                              borderSide: const BorderSide(
+                                color: Colors.black12,
+                              ),
                             ),
                           ),
                         ),
@@ -163,11 +169,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.black12),
+                              borderSide: const BorderSide(
+                                color: Colors.black12,
+                              ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.black12),
+                              borderSide: const BorderSide(
+                                color: Colors.black12,
+                              ),
                             ),
                           ),
                         ),
@@ -181,7 +191,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   agreePersonalData = value!;
                                 });
                               },
-                              activeColor: lightColorScheme.primary,
                             ),
                             const Text(
                               'I agree to the processing of ',
@@ -189,45 +198,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             Text(
                               'Personal data',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: lightColorScheme.primary,
-                              ),
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
                         const SizedBox(height: 25.0),
-                  // Sign Up button
-BlocBuilder<AuthBloc, AuthState>(
-  builder: (context, state) {
-    return CustomButton(
-      text: state is AuthLoading ? 'Signing up...' : 'Sign up',
-      onPressed: () {
-        if (state is! AuthLoading) {
-          // Validate form
-          if (_formSignupKey.currentState!.validate() && agreePersonalData) {
-            // Dispatch signup event
-            context.read<AuthBloc>().add(
-                  AuthSignUpRequested(
-                    fullName: _fullNameController.text,
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                  ),
-                );
-          } else if (!agreePersonalData) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Please agree to the processing of personal data'),
-              ),
-            );
-          }
-        }
-      },
-      backgroundColor: lightColorScheme.primary,
-      textColor: Colors.white,
-    );
-  },
-),
+                        // Sign Up button
+                        BlocBuilder<AuthBloc, AuthState>(
+                          builder: (context, state) {
+                            return CustomButton(
+                              text:
+                                  state is AuthLoading
+                                      ? 'Signing up...'
+                                      : 'Sign up',
+                              onPressed: () {
+                                if (state is! AuthLoading) {
+                                  // Validate form
+                                  if (_formSignupKey.currentState!.validate() &&
+                                      agreePersonalData) {
+                                    // Dispatch signup event
+                                    context.read<AuthBloc>().add(
+                                      AuthSignUpRequested(
+                                        fullName: _fullNameController.text,
+                                        email: _emailController.text,
+                                        password: _passwordController.text,
+                                      ),
+                                    );
+                                  } else if (!agreePersonalData) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Please agree to the processing of personal data',
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                            );
+                          },
+                        ),
                         const SizedBox(height: 30.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -257,9 +267,7 @@ BlocBuilder<AuthBloc, AuthState>(
                           ],
                         ),
                         const SizedBox(height: 30.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        ),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly),
                         const SizedBox(height: 25.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -279,10 +287,7 @@ BlocBuilder<AuthBloc, AuthState>(
                               },
                               child: Text(
                                 'Sign in',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: lightColorScheme.primary,
-                                ),
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],

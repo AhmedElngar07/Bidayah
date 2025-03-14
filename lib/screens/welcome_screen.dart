@@ -1,144 +1,152 @@
 import 'package:bidayah/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:bidayah/widgets/custom_scaffold.dart';
 import 'package:bidayah/screens/login_screen.dart';
-
-class WelcomeButton extends StatelessWidget {
-  const WelcomeButton({
-    super.key,
-    required this.buttonText,
-    required this.onTap,
-    this.color = Colors.blue,
-    this.textColor = Colors.white,
-    this.borderColor = Colors.transparent,
-  });
-
-  final String buttonText;
-  final VoidCallback onTap;
-  final Color color;
-  final Color textColor;
-  final Color borderColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-        decoration: BoxDecoration(
-          color: color,
-          border: Border.all(color: borderColor, width: 2),
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 4,
-              offset: Offset(2, 2),
-            ),
-          ],
-        ),
-        child: Center(
-          child: Text(
-            buttonText,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.w600,
-              color: textColor,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      child: Stack(
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Scaffold(
+      body: Column(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [Color(0xFF3A47D5), Color(0xFF000000)],
-              ),
+          // Top image section with original design layout
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              color: Colors.white,
+              child: Image.asset('assets/m.jpg', fit: BoxFit.contain),
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(height: 80),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'WELCOME TO BIDAYAH!',
+
+          // Bottom welcome panel with modern styling
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.fromLTRB(30, 25, 30, 35),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 18, 49, 97),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 20,
+                  offset: const Offset(0, -5),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Welcome text with modern typography
+                const Text(
+                  'WELCOME TO',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 2,
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                // BIDAYAH text with subtle gradient
+                ShaderMask(
+                  shaderCallback: (Rect bounds) {
+                    return const LinearGradient(
+                      colors: [Colors.white, Color(0xFFE0E0FF)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ).createShader(bounds);
+                  },
+                  child: const Text(
+                    'BIDAYAH',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 34,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 3,
+                      height: 1,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 25),
+
+                // Login button with more modern styling
+                Container(
+                  width: double.infinity,
+                  height: 54,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  child: ElevatedButton(
+                    onPressed:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color.fromARGB(255, 18, 49, 97),
+                      elevation: 4,
+                      shadowColor: Colors.black.withOpacity(0.2),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      'LOGIN',
                       style: TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      '',
-                      style: TextStyle(fontSize: 16.0, color: Colors.white70),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 40.0,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: WelcomeButton(
-                        buttonText: 'Sign in',
-                        onTap:
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginScreen(),
-                              ),
-                            ),
-                        color: Colors.white,
-                        textColor: const Color.fromARGB(255, 31, 28, 236),
-                        borderColor: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.2,
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: WelcomeButton(
-                        buttonText: 'Sign up',
-                        onTap:
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SignUpScreen(),
-                              ),
-                            ),
-                        color: Colors.transparent,
-                        textColor: Colors.white,
-                        borderColor: Colors.white,
+                  ),
+                ),
+
+                // Create account button with modern outlined style
+                Container(
+                  width: double.infinity,
+                  height: 54,
+                  child: ElevatedButton(
+                    onPressed:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpScreen(),
+                          ),
+                        ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: const BorderSide(color: Colors.white, width: 2),
                       ),
                     ),
-                  ],
+                    child: const Text(
+                      'Create an account',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

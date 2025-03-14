@@ -4,7 +4,6 @@ import 'package:bidayah/Screens/Home_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class SkillSelectionPage extends StatelessWidget {
   const SkillSelectionPage( {super.key});
 
@@ -18,7 +17,9 @@ class SkillSelectionPage extends StatelessWidget {
             
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05),
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.05,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -55,27 +56,35 @@ class SkillSelectionPage extends StatelessWidget {
             /// **Button at the Bottom**
             BlocBuilder<SkillCubit, SkillState>(
               builder: (context, state) {
-                bool isEnabled = state is SkillSelected && state.selectedLearningStyle != null;
+                bool isEnabled =
+                    state is SkillSelected &&
+                    state.selectedLearningStyle != null;
 
                 return Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  color: Colors.white, // Optional: Add background color if needed
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
+                  color:
+                      Colors.white, // Optional: Add background color if needed
                   child: ElevatedButton(
-                    onPressed: isEnabled
-                        ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>  HomePage(),
-                        ),
-                      );
-                    }
-                        : null,
+                    onPressed:
+                        isEnabled
+                            ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomePage(),
+                                ),
+                              );
+                            }
+                            : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: isEnabled
-                          ? const Color.fromARGB(255, 18, 49, 97)
-                          : Colors.grey[400],
+                      backgroundColor:
+                          isEnabled
+                              ? const Color.fromARGB(255, 18, 49, 97)
+                              : Colors.grey[400],
                       padding: const EdgeInsets.all(16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -115,25 +124,33 @@ class SkillSelectionWidget extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (state is SkillError) {
           return Center(
-            child: Text(state.message, style: const TextStyle(color: Colors.red)),
+            child: Text(
+              state.message,
+              style: const TextStyle(color: Colors.red),
+            ),
           );
         } else if (state is SkillsLoaded || state is SkillSelected) {
-          List<String> skills = state is SkillsLoaded
-              ? state.skills
-              : (state as SkillSelected).skills;
+          List<String> skills =
+              state is SkillsLoaded
+                  ? state.skills
+                  : (state as SkillSelected).skills;
 
           return CustomContainer(
             title: "Select a Field",
             child: Wrap(
               spacing: 15,
               runSpacing: 10,
-              children: skills.map((skill) {
-                return SkillButton(
-                  text: skill,
-                  isSelected: state is SkillSelected && state.selectedSkill == skill,
-                  onTap: () => context.read<SkillCubit>().selectSkill(skill),
-                );
-              }).toList(),
+              children:
+                  skills.map((skill) {
+                    return SkillButton(
+                      text: skill,
+                      isSelected:
+                          state is SkillSelected &&
+                          state.selectedSkill == skill,
+                      onTap:
+                          () => context.read<SkillCubit>().selectSkill(skill),
+                    );
+                  }).toList(),
             ),
           );
         }
@@ -159,13 +176,17 @@ class SkillDetailsWidget extends StatelessWidget {
                 child: Wrap(
                   spacing: 12,
                   runSpacing: 8,
-                  children: state.roadMapFields.map((field) {
-                    return SkillButton(
-                      text: field,
-                      isSelected: state.selectedRoadMapField == field,
-                      onTap: () => context.read<SkillCubit>().selectRoadMapField(field),
-                    );
-                  }).toList(),
+                  children:
+                      state.roadMapFields.map((field) {
+                        return SkillButton(
+                          text: field,
+                          isSelected: state.selectedRoadMapField == field,
+                          onTap:
+                              () => context
+                                  .read<SkillCubit>()
+                                  .selectRoadMapField(field),
+                        );
+                      }).toList(),
                 ),
               ),
 
@@ -178,13 +199,18 @@ class SkillDetailsWidget extends StatelessWidget {
                   child: Wrap(
                     spacing: 12,
                     runSpacing: 8,
-                    children: ['Reading', 'Video', 'Audio'].map((learningStyle) {
-                      return SkillButton(
-                        text: learningStyle,
-                        isSelected: state.selectedLearningStyle == learningStyle,
-                        onTap: () => context.read<SkillCubit>().selectLearningStyle(learningStyle),
-                      );
-                    }).toList(),
+                    children:
+                        ['Reading', 'Video', 'Audio'].map((learningStyle) {
+                          return SkillButton(
+                            text: learningStyle,
+                            isSelected:
+                                state.selectedLearningStyle == learningStyle,
+                            onTap:
+                                () => context
+                                    .read<SkillCubit>()
+                                    .selectLearningStyle(learningStyle),
+                          );
+                        }).toList(),
                   ),
                 ),
             ],
@@ -219,7 +245,7 @@ class CustomContainer extends StatelessWidget {
         children: [
           Text(
             title,
-            style:  TextStyle(
+            style: TextStyle(
               color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.7),
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -251,9 +277,10 @@ class SkillButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
-        backgroundColor: isSelected
-            ? const Color.fromARGB(49, 9, 68, 247)
-            : const Color(0xFFF0F3FA).withOpacity(0.2),
+        backgroundColor:
+            isSelected
+                ? const Color.fromARGB(49, 9, 68, 247)
+                : const Color(0xFFF0F3FA).withOpacity(0.2),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),

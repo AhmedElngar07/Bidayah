@@ -34,10 +34,10 @@ class _HomeViewState extends State<HomeView> {
       body: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  topRight: Radius.circular(25),
-),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25),
+          ),
         ),
         width: screenSize.width,
         height: screenSize.height,
@@ -62,14 +62,16 @@ class _HomeViewState extends State<HomeView> {
                       icon: Icons.lightbulb,
                       color: Colors.orange,
                       title: "Tips & Information",
-                      subtitle: "Learn about UI/UX design and interview techniques.",
+                      subtitle:
+                          "Learn about UI/UX design and interview techniques.",
                     ),
                     const SizedBox(height: 10),
                     buildInfoCard(
                       icon: Icons.description,
                       color: Colors.blue,
                       title: "CV Builder",
-                      subtitle: "Create and customize your professional CV with ease.",
+                      subtitle:
+                          "Create and customize your professional CV with ease.",
                     ),
                   ],
                 ),
@@ -91,9 +93,7 @@ class _HomeViewState extends State<HomeView> {
           // ✅ Navigate to the selected screen
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => _screens[index],
-            ),
+            MaterialPageRoute(builder: (context) => _screens[index]),
           );
         },
       ),
@@ -149,6 +149,3 @@ Widget _buildRoadmapCard(BuildContext context) {
     ),
   );
 }
-
-
-

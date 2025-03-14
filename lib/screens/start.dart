@@ -2,7 +2,7 @@ import 'package:bidayah/Screens/Skill_selection_page.dart';
 import 'package:flutter/material.dart';
 
 class StartScreen extends StatelessWidget {
-  const StartScreen({Key? key}) : super(key: key);
+  const StartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +24,16 @@ class StartScreen extends StatelessWidget {
           // Get the available dimensions
           final maxWidth = constraints.maxWidth;
           final maxHeight = constraints.maxHeight;
-          
+
           // Calculate responsive sizes
           final cloudTextSize = maxWidth > 600 ? 24.0 : 20.0;
-          
+
           return Stack(
             fit: StackFit.expand,
             children: [
               // Background image
-              Image.asset(
-                'assets/Image 2025.jpg',
-                fit: BoxFit.cover,
-              ),
-              
+              Image.asset('assets/Image 2025.jpg', fit: BoxFit.cover),
+
               // Cloud text overlay - positioned lower
               Positioned(
                 bottom: maxHeight * 0.15, // Positioned lower
@@ -58,7 +55,7 @@ class StartScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               // Gradient overlay at bottom
               Positioned(
                 bottom: 0,
@@ -98,12 +95,11 @@ class StartScreen extends StatelessWidget {
           mini: false,
           elevation: 2,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // Square corners with slight rounding
+            borderRadius: BorderRadius.circular(
+              12,
+            ), // Square corners with slight rounding
           ),
-          child: const Icon(
-            Icons.arrow_forward,
-            color: Colors.white,
-          ),
+          child: const Icon(Icons.arrow_forward, color: Colors.white),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -112,16 +108,13 @@ class StartScreen extends StatelessWidget {
 }
 
 class StartWidget extends StatelessWidget {
-  const StartWidget({Key? key}) : super(key: key);
+  const StartWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Bidayah App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'Roboto',
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Roboto'),
       debugShowCheckedModeBanner: false,
       home: const StartScreen(),
       // Screen-size aware builder
@@ -131,7 +124,7 @@ class StartWidget extends StatelessWidget {
         final width = mediaQuery.size.width;
         final height = mediaQuery.size.height;
         final aspectRatio = width / height;
-        
+
         // Calculate appropriate text scale factor
         double textScaleFactor;
         if (aspectRatio < 0.5) {
@@ -147,9 +140,11 @@ class StartWidget extends StatelessWidget {
           // Tablet landscape or desktop
           textScaleFactor = 1.25;
         }
-        
+
         return MediaQuery(
-          data: mediaQuery.copyWith(textScaleFactor: textScaleFactor),
+          data: mediaQuery.copyWith(
+            textScaler: TextScaler.linear(textScaleFactor),
+          ),
           child: child!,
         );
       },

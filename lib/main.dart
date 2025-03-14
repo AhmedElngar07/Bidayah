@@ -9,13 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const AppStarter());
 }
 
@@ -34,7 +30,9 @@ class AppStarter extends StatelessWidget {
         } else if (snapshot.hasError) {
           return MaterialApp(
             home: Scaffold(
-              body: Center(child: Text("Firebase Init Error: ${snapshot.error}")),
+              body: Center(
+                child: Text("Firebase Init Error: ${snapshot.error}"),
+              ),
             ),
           );
         }
@@ -56,20 +54,15 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(
-            authService: AuthService(),
+        providers: [
+          BlocProvider<AuthBloc>(
+            create: (context) => AuthBloc(authService: AuthService()),
           ),
-        ),
-        // Add other BLoCs here as needed
-      ],
-      child: MaterialApp(
+          // Add other BLoCs here as needed
+        ],
+        child: MaterialApp(
           debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-            fontFamily: 'Montserrat', 
-              useMaterial3: true
-            ),
+          theme: ThemeData(fontFamily: 'Montserrat', useMaterial3: true),
           // home:  HomePage(),
           home: WelcomeScreen(), // Set the initial screen
           builder: EasyLoading.init(),
