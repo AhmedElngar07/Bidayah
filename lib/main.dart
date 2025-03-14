@@ -2,6 +2,7 @@ import 'package:bidayah/OnBoardingInstruction/OnBoardingScreens.dart';
 import 'package:bidayah/Screens/Home_Page.dart';
 import 'package:bidayah/Screens/Skill_selection_page.dart';
 import 'package:bidayah/Screens/TestText.dart';
+import 'package:bidayah/Widgets/home_view.dart';
 import 'package:bidayah/blocs/auth/auth_bloc.dart';
 import 'package:bidayah/Cubits/Skill_cubit.dart';
 import 'package:bidayah/Screens/welcome_screen.dart';
@@ -73,7 +74,7 @@ class MyApp extends StatelessWidget {
               useMaterial3: true
             ),
           
-          home: SkillSelectionPage() , 
+          home: HomePage() , 
           builder: EasyLoading.init(),
         ),
       ),
